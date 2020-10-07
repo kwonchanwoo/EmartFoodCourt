@@ -129,7 +129,7 @@ public class BoardController {
 		if (((String) session.getAttribute("id") == null)) {
 			PrintWriter out = response.getWriter();
 			out.println("<script>");
-			out.println("alert('로그인 해주십시오..')");
+			out.println("alert('로그인 해주십시오.')");
 			out.println("location.href='/EmartFoodCourt/memberLogin.me';");
 			out.println("</script>");
 		} else {
