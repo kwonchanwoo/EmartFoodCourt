@@ -1,0 +1,205 @@
+@charset "UTF-8";
+
+
+#table {
+	font-weight: bold;
+	position: relative;
+	display: table;
+	width: 650px;
+	text-align: center;
+	background-color:white;
+	border:3px solid grey;
+	
+
+	/* float:left; */
+}
+#title{
+	width:100%;
+	height:150px;
+	text-align:center;
+	margin:0 auto;
+	background-color: #81F7BE;
+}
+
+#content{
+	width:100%;
+}
+.cell {
+	float:left;
+	display: table-cell;
+	border-top: 1px solid #DDD;
+	border-bottom: 1px solid #DDD;
+	height: 60px;
+}
+.board_row:hover {
+	background-color: #E6E6E6;
+}
+.col1 {
+	width: 10%;
+}
+.col2{
+	width: 10%;
+}
+.col3 {
+	width: 40%;
+}
+
+.col4 {
+	width:10%;
+}
+
+.col5 {
+	width: 30%;
+}
+.header{
+	position:relative;
+	width:650px;
+	height: 60px;
+	background-color:white;
+	border:3px solid grey;
+}
+
+#search{
+	width:130px;
+	border: 1px dashed #E6E6E6;
+	background-color: #E6E6E6;
+}
+#search_icon{
+	height:28px;
+	background-color: #E6E6E6;
+}
+
+#header-one{
+	position:relative;
+	width:100%;
+	height:30px;
+}
+
+#header-two{
+	width:100%;
+	position:absolute;
+}
+#header-two-1{
+	float:left;
+	width:100px;
+	position:relative;
+	float:left;
+	margin-right:5px;
+	margin-left:5px;
+}
+
+#header-two-2{
+	float:left;
+	width:100px;
+	position:relative;
+	float:left;
+	margin-right:5px;
+}
+#header-two-3{
+	top:5px;
+	float:right;
+	width:350px;
+	position:relative;
+	float:left;
+}
+#header-two-4{
+	float:right;
+}	
+.free_container{
+	
+	position:relative;
+	width:1200px;
+	height:100%;
+	margin:0 auto;
+	background-color:#F2F2F2;
+}
+#foot{
+	
+    position: relative;
+    top:400px;
+}
+
+
+
+.window {
+	display: none;
+	left: 100px;
+	top: 100px;
+	z-index: 10000;
+	position:fixed;
+	left:0;
+	top:0;
+	width:100%;
+}
+
+.openMask{
+	display:none;
+}
+
+.page_info{
+	text-align:center;
+	margin:0 auto;
+}
+.m_board_row{
+	display:none;
+}
+@media(max-width:1066px){
+	.free_container{
+	/* background:rgba(0,0,0,.5); */
+	width:100%;
+	padding-left:0px;
+	
+	}
+	.header{
+		width:100%;
+		left:0px;
+	}
+	
+	#table{
+		width:100%;
+		left:0px;
+	}
+	#header-two-3{
+		display:none;
+	}
+	.openMask{
+		 display: inline;
+		position:static;
+	}
+	.category{
+		width:20%;
+		height:50px;
+		margin-right: -5px;
+	}
+	#search{
+		width:60%;
+		height:50px;
+		background-color:white;
+	}
+	
+	#title{
+	display:none;
+	}
+	
+	#search_icon{
+		width:19%;
+		height:54px;
+		margin-left:-6px;
+	}
+	.board_row{
+		display:none;
+	}
+	.m_board_row{
+		display:block;
+	}
+	.col2{
+		width:80%
+	}
+	.col3{
+		width:10%;
+	}
+}
+
+
+
+

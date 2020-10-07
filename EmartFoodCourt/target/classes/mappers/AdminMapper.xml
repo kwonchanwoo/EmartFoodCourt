@@ -1,0 +1,78 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.spring.mapper.AdminMapper">
+<select id="member_count" resultType="integer">
+	<choose>
+		<when test="search==null">
+			select count(*) from member	
+		</when>
+		<otherwise>
+			select count(*) from member where id like  CONCAT('%',#{choice},'%')
+		</otherwise>
+	</choose>
+</select>
+
+<select id="memberList" resultType="Hashmap">
+	<bind name="startrow" value="(page - 1) * limit" />
+	<choose>
+		<when test="search==null">
+			select * from member limit #{startrow},#{limit}
+		</when>
+	
+	<otherwise>
+		SELECT * FROM member where id like CONCAT('%',#{search},'%') limit #{startrow},#{limit}
+	</otherwise>
+	</choose>
+</select>
+<select id="food_count" resultType="integer">
+	<choose>
+		<when test="choice==null">
+			select count(c.connect_num) from connect c  left join food f on c.food_name = f.food_name
+		</when>
+		<otherwise>
+			<choose>
+				<when test="choice=='food_name'">
+					 select count(c.connect_num) from connect c  left join food f on c.food_name = f.food_name where c.food_name like CONCAT('%',#{search},'%') 
+				</when>
+				<when test="choice=='jijum_name'">
+					select count(c.connect_num) from connect c  left join food f on c.food_name = f.food_name where c.jijum_name like CONCAT('%',#{search},'%') 
+				</when>
+		</choose>	
+		</otherwise>
+	</choose>
+</select>
+<select id="food_list" resultType="Hashmap">
+	<bind name="startrow" value="(page - 1) * limit" />
+	<choose>
+		<when test="choice==null">
+		select c.connect_num,c.food_name,c.food_image,c.food_content,c.jijum_name,c.con_price,f.food_category from connect c  left join food f on c.food_name = f.food_name limit #{startrow},#{limit}
+		</when>
+		<otherwise>
+		<choose>
+			<when test="choice=='food_name'">
+				select c.connect_num,c.food_name,c.food_image,c.food_content,c.jijum_name,c.con_price,f.food_category from connect c  left join food f on c.food_name = f.food_name where c.food_name like CONCAT('%',#{search},'%') limit #{startrow},#{limit}
+			</when>
+			<when test="choice=='jijum_name'">
+				select c.connect_num,c.food_name,c.food_image,c.food_content,c.jijum_name,c.con_price,f.food_category from connect c  left join food f on c.food_name = f.food_name where c.jijum_name like CONCAT('%',#{search},'%') limit #{startrow},#{limit}
+			</when>
+		</choose>		
+		</otherwise>
+	</choose>
+</select>
+<select id="food_info" resultType="Hashmap">
+	select t.connect_num,t.food_name,t.jijum_name,t.food_content,t.con_price,t.food_image,t.g,t.c  from total t where t.connect_num =#{connect_num}
+</select>
+<select id="select_food" resultType="Hashmap">
+	select distinct(f.food_category) as food_category from food f
+</select>
+<select id="select_jijum" resultType="Hashmap">
+	select distinct(j.jijum_name) as jijum_name from jijum j
+</select>
+<select id="food_add" resultType="integer">
+	call food_count(#{food_name},#{food_category},#{jijum_name},#{food_image},#{food_content},#{con_price},@RESULT);
+select @RESULT;
+</select>
+
+</mapper>

@@ -1,0 +1,214 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+					
+<mapper namespace="com.spring.mapper.BoardMapper">
+	<select id="free_board_count" resultType="integer">
+		select  count(f.board_num) as count
+		from free_board f
+
+		<choose>
+			<when test="board_category=='all' and category==null">
+			</when>
+			<otherwise>
+				where
+			</otherwise>
+		</choose>
+		<if test="board_category!='all'">
+			f.board_category=#{board_category} 
+		</if>
+		<if test="board_category!='all' and category!=null"> and </if>
+		 
+		<choose>
+			<when test="category=='subject'">
+				f.board_subject like CONCAT('%',#{search},'%')
+			</when>
+			<when test="category=='writer'">
+				f.id like CONCAT('%',#{search},'%')
+			</when>
+		</choose>
+	</select>
+	<select id="select_free_board" resultType="Hashmap">
+		
+		<bind name="startrow" value="(page - 1) * limit" />	
+		select 
+			f.board_num,
+			f.id,
+			f.board_subject,
+			f.board_content,
+			f.board_readcount,
+			f.board_date,
+			f.board_category,
+			ifnull((select sum(vote_up) from free_board_vote fv where fv.board_num= f.board_num group by fv.board_num),0) as vote_up,
+			ifnull((select sum(vote_down) from free_board_vote fv where fv.board_num= f.board_num group by fv.board_num),0) as vote_down,
+			ifnull((select count(reply_num) from free_board_reply fr where fr.board_num = f.board_num group by fr.board_num),0) as count_reply,
+			TIMESTAMPDIFF(YEAR,f.board_date,now()) as year,
+			TIMESTAMPDIFF(MONTH,f.board_date,now()) as month,
+			TIMESTAMPDIFF(DAY,f.board_date,now()) as day,
+			TIMESTAMPDIFF(HOUR,f.board_date,now()) as hour,
+			TIMESTAMPDIFF(MINUTe,f.board_date,now()) as minute,
+			TIMESTAMPDIFF(SECOND,f.board_date,now()) as second
+		from free_board f
+
+		<choose>
+			<when test="board_category=='all' and category==null">
+			</when>
+			<otherwise>
+				where
+			</otherwise>
+		</choose>
+		<if test="board_category!='all'">
+			
+			f.board_category=#{board_category} 
+		</if>
+		
+		<if test="board_category!='all' and category!=null"> and </if>
+		 
+		<choose>
+			<when test="category=='subject'">
+				f.board_subject like CONCAT('%',#{search},'%')
+			</when>
+			<when test="category=='writer'">
+				f.id like CONCAT('%',#{search},'%')
+			</when>
+		</choose>
+		<choose>
+			<when test="board_orderby=='popularity'">
+				order by vote_up desc
+			</when>
+			<when test="board_orderby=='new'">
+				order by f.board_date desc
+			</when>
+		</choose>
+		limit #{startrow},#{limit}
+	</select>
+	<insert id="free_board_write">
+		insert into free_board
+		(id,board_subject,board_content,board_date,board_category)
+		values(#{id},#{board_subject},#{board_content},now(),#{board_category})
+	</insert>
+	<select id="free_board_detail" resultType="hashmap">
+		select 
+			f.board_num,
+			f.id,
+			f.board_subject,
+			f.board_content,
+			f.board_readcount,
+			f.board_date,
+			f.board_category,
+			ifnull((select sum(vote_up) from free_board_vote fv where fv.board_num= f.board_num group by fv.board_num),0) as vote_up,
+			ifnull((select sum(vote_down) from free_board_vote fv where fv.board_num= f.board_num group by fv.board_num),0) as vote_down,
+			ifnull((select count(reply_num) from free_board_reply fr where fr.board_num = f.board_num group by fr.board_num),0) as count_reply
+		from free_board f
+		where f.board_num=#{board_num}
+	</select>
+	<select id="free_board_reply" resultType="hashmap">
+		select 
+			f.reply_num as reply_num,
+			f.id as id,
+			f.board_num as board_num,
+			f.reply_content as reply_content,
+			f.reply_re_ref as reply_re_ref,
+			f.reply_re_lev as reply_re_lev,
+			f.reply_re_seq as reply_re_seq,
+			f.reply_re_id as reply_re_id,
+			f.reply_date as reply_date,
+			f.reply_file as reply_file,
+			'0' as ct,
+			f.reply_re_ck as reply_re_ck 
+		from free_board_reply f 
+		where f.board_num=#{board_num} 
+		order by f.reply_re_ref desc,f.reply_re_seq asc
+	</select>
+	<update id="free_board_read">
+		update free_board set board_readcount= board_readcount+1 where board_num = #{board_num}
+	</update>
+	<update id="board_modify">
+		update free_board set board_subject=#{board_subject},board_content=#{board_content},board_category=#{board_category} where board_num=#{board_num}
+	</update>
+	<delete id="board_delete">
+		delete from free_board_vote where board_num=#{board_num};
+		delete from free_board_reply where board_num=#{board_num};
+		delete from free_board where board_num=#{board_num};
+	</delete>
+	<select id="board_vote_select" resultType="hashmap">
+		select vote_num,id,vote_date,board_num,vote_up,vote_down from free_board_vote where board_num=#{board_num} and id=#{id}
+	</select>
+	<select id="board_vote_up">
+		insert free_board_vote (id,board_num,vote_up,vote_down) values(#{id},#{board_num},1,0)
+	</select>
+	<select id="board_vote_down">
+		insert free_board_vote
+		(id,board_num,vote_up,vote_down) values(#{id},#{board_num},0,1)
+	</select>
+	<delete id="board_vote_delete">
+		delete from free_board_vote where board_num=#{board_num} and id=#{id}
+	</delete>
+	<update id="board_vote_plus">
+		update free_board_vote set vote_up = vote_up+1 , vote_down= vote_down-1 where board_num=#{board_num} and id=#{id}
+	</update>
+	<update id="board_vote_minus">
+		update free_board_vote set vote_up= vote_up-1, vote_down=vote_down+1 where board_num=#{board_num} and id=#{id}
+	</update>
+	<select id="board_reply_max_pk" resultType="integer">
+		select max(f.reply_num) as reply_re_ref from free_board_reply f
+	</select>
+	<insert id="board_reply_write">
+		<choose>
+			<when test="reply_file!=null">
+				<choose>
+					<when test="reply_re_id!=null">
+						insert into free_board_reply
+						(id,board_num,reply_content,reply_file,reply_re_ref,reply_re_lev,reply_re_seq,reply_re_id,reply_date)
+						values(#{id},#{board_num},#{reply_content},#{reply_file},#{reply_re_ref},#{reply_re_lev},#{reply_re_seq},#{reply_re_id},now())
+					</when>
+					<otherwise>
+						insert into free_board_reply
+						(id,board_num,reply_content,reply_file,reply_re_ref,reply_re_lev,reply_re_seq,reply_date)
+						values(#{id},#{board_num},#{reply_content},#{reply_file},#{reply_re_ref},#{reply_re_lev},#{reply_re_seq},now())
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				<choose>
+					<when test="reply_re_id!=null">
+						insert into free_board_reply
+						(id,board_num,reply_content,reply_re_ref,reply_re_lev,reply_re_seq,reply_re_id,reply_date)
+						values(#{id},#{board_num},#{reply_content},#{reply_re_ref},#{reply_re_lev},#{reply_re_seq},#{reply_re_id},now())
+					</when>
+					<otherwise>
+						insert into free_board_reply
+						(id,board_num,reply_content,reply_re_ref,reply_re_lev,reply_re_seq,reply_date)
+						values(#{id},#{board_num},#{reply_content},#{reply_re_ref},#{reply_re_lev},#{reply_re_seq},now())
+					</otherwise>
+				</choose>
+			</otherwise>
+		</choose>
+
+	</insert>
+	<update id="board_reply_update">
+		update free_board_reply f set
+		f.reply_re_seq=f.reply_re_seq+1 where
+		f.reply_re_ref=#{reply_re_ref}
+		and f.reply_re_seq>#{reply_re_seq};
+		update free_board_reply f set f.reply_re_ck=f.reply_re_ck+1 where f.reply_re_seq=0 and f.reply_re_ref=#{reply_re_ref};
+	</update>
+	<update id="board_reply_modify">
+		<choose>
+			<when test="reply_file!=null">
+				update free_board_reply set reply_content = #{reply_content},reply_file=#{reply_file} where reply_num=#{reply_num}
+			</when>
+			<otherwise>
+				update free_board_reply set reply_content = #{reply_content} where reply_num=#{reply_num}
+				
+			</otherwise>
+		</choose>
+	</update>
+	<delete id= "board_reply_delete">
+		delete from free_board_reply where reply_num = #{reply_num}	
+	</delete>
+	<update id="free_board_date_update">
+		update free_board f set
+		f.board_date_result=#{board_date_result} where f.board_num=#{board_num}
+	</update>
+</mapper>

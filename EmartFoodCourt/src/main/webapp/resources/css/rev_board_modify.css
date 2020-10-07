@@ -1,0 +1,28 @@
+@charset "UTF-8";
+#registForm {
+	width: 500px;
+	height: 610px;
+	border: 1px solid red;
+	margin: auto;
+}
+
+h2 {
+	text-align: center;
+}
+
+
+
+#commandCell {
+	text-align: center;
+}
+
+#img_1 {
+	display: block;
+}
+
+#img_2 {
+	display: none;
+}
+#rev_board_image_view{
+	text-align:center;
+}

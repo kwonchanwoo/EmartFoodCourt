@@ -1,0 +1,30 @@
+#articleForm {
+	width: 500px;
+	height: 100%;
+	border: 1px solid red;
+	margin: 0 auto;
+}
+
+h2 {
+	text-align: center;
+}
+
+#basicInfoArea {
+	height: 100%;
+	text-align: center;
+	margin: auto;
+}
+
+#articleContextArea {
+
+	margin-top: 20px;
+	height: auto;
+	text-align: center;
+	overflow: auto;
+}
+
+#commandList {
+	margin: 0 auto;
+	width: 100%;
+	text-align: center
+}

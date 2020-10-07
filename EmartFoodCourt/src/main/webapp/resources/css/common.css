@@ -1,0 +1,29 @@
+#jb_table{
+	display:table; width:500px;
+	height:100%;
+	margin:auto;
+}
+.row{
+	display:table-row;
+}
+.cell{
+	display:table-cell;
+
+}
+.col1{
+	width:30%;
+	text-align: center;
+	background:orange;
+}
+.col2{
+	width:70%;
+	border:1px solid black;
+}
+.col3{
+	width:100%;
+	text-align:center;
+	border:1px solid black;
+}
+#board_content{
+	display:none;
+}

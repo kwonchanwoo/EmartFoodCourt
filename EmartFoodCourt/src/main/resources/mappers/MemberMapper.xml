@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.MemberMapper">
+
+	<select id="login_chk" resultType="integer">
+		select count(id) as count from
+		member where BINARY(id)=#{id} and BINARY(pass)=#{pass}
+	</select>
+
+	<select id="getMember" resultType="hashmap">
+		select
+		id,pass,name,gender,age,phone,address,zip,email,grade from member
+		where id=#{id}
+	</select>
+	<select id="dupl_chk" resultType="integer">
+		select count(id) as count from
+		user where id=#{id}
+	</select>
+	<select id="address_count" resultType="integer">
+		select count(m.email) from member m where m.email  = #{email} group by m.email ;
+	</select>
+	<insert id="user_add">
+		insert into user (id) values (#{id})
+	</insert>
+
+	<delete id="dupl_sol">
+		delete from user where id=#{id}
+	</delete>
+	<select id="getUser" resultType="hashmap">
+		select user_num,id,user_contime
+		from user where id=#{id};
+	</select>
+	<delete id="session_db_del">
+		delete from user where id=#{id}
+	</delete>
+	<insert id="join">
+		insert into
+		member(id,pass,name,gender,age,phone,address,zip,email,grade)
+		value(#{id},#{pass},#{name},#{gender},#{age},#{phone},#{address},#{zip},#{email},1)
+	</insert>
+	<select id="search_id" resultType="hashmap">
+		select id from member where
+		email=#{email}
+	</select>
+	<select id="search_pass" resultType="hashmap">
+		select id,email from member
+		where id=#{id}
+	</select>
+	<update id="modify_pass">
+		update member set pass=#{pass} where id=#{id}
+	</update>
+	<select id="select_mypage" resultType="hashmap">
+select m.id as id,m.name as name,m.gender as gender,m.age as age,m.phone as phone,m.email as email,m.grade as grade, 
+(select count(id) from testdb.free_board where id=#{id}) as cboard_num, 
+(select count(id) from testdb.recom where id=#{id}) as crec_num, 
+(select count(id) from testdb.grade where id=#{id}) as cgrade_num, 
+(select count(id) from testdb.rev_board where id=#{id}) as crev_num, 
+(select count(id) from testdb.event where id=#{id}) as cevent_num from member m 
+ where m.id=#{id}
+ 
+
+	</select>
+	<delete id="member_delete">
+		delete from free_board_reply where id=#{id};
+		delete from free_board_vote where id=#{id};
+		delete from free_board where id=#{id};
+		delete from rev_board where id=#{id};
+		delete from grade where id=#{id};
+		delete from recom where id=#{id};
+		delete from event where id=#{id};
+		delete from user where id=#{id};
+		delete from member where id=#{id};	
+	</delete>
+<select id="selectMember" resultType="hashmap">
+	select (select count(grade) from member  where grade=2) as count_grade,m.id as id,m.pass as pass,m.name as name,m.gender as gender,m.age as age,m.phone as phone,m.address as address,m.zip as zip,m.email as email,m.grade as grade from member m where id=#{id};
+</select>
+<update id="member_modify">
+	UPDATE member SET pass = #{pass}, name = #{name}, age = #{age}, grade = #{grade}, gender = #{gender}, email = #{email} where id = #{id};
+	update free_board_reply set reply_re_lev = #{grade} where id = #{id}
+</update>
+</mapper>
+

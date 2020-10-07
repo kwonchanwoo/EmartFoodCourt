@@ -1,0 +1,333 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.FunctionMapper">
+
+	<select id="jijum_menu" resultType="hashmap">
+		select jijum_name from jijum;
+	</select>
+
+	<select id="food_menu" resultType="hashmap">
+		select food_category from
+		fd_category;
+	</select>
+
+	<!-- 동적쿼리 -->
+	<select id="recom" resultType="hashmap">
+		select
+		t.connect_num,t.food_name,t.food_category,t.food_content,t.jijum_name,t.con_price,t.food_image,CASE
+		round(t.g,2) WHEN 0 THEN null ELSE round(t.g,2) END as avg_grade,t.c
+		as count_rec from total t
+		where t.food_category = #{food_category} and
+		t.jijum_name=#{jijum_name}
+		group by food_name,jijum_name
+		<if test=" choice=='추천수'">
+			order by t.g desc,t.c desc limit 3;
+		</if>
+		<if test=" choice=='평점수'">
+			order by t.c desc,t.g desc limit 3;
+		</if>
+
+
+	</select>
+
+	<select id="food_count" resultType="integer">
+		select
+		count(distinct(d.jijum_name)) as ct from dis_jijum d where
+		d.food_category is not null
+	</select>
+
+	<select id="menu_view" resultType="hashmap"
+		parameterType="hashmap">
+		<choose>
+			<when test="jijum_name=='all' and food_category==null">
+				select distinct(d.jijum_name) as jijum_name from
+				dis_jijum d where d.food_category is not null
+			</when>
+			<when test="jijum_name!='all' and food_category!=null">
+				<foreach collection="food_category" index="index" item="a"
+					open="" close="" separator="">
+					<choose>
+						<when test="index lt food_category.length-1">
+							select distinct(d.jijum_name) as jijum_name from
+							dis_jijum d where
+							d.food_category=#{a} and
+							d.jijum_name=#{jijum_name} and
+							d.food_category is not null union
+						</when>
+						<otherwise>
+							select distinct(d.jijum_name) as jijum_name from
+							dis_jijum d where
+							d.food_category=#{a} and
+							d.jijum_name=#{jijum_name} and
+							d.food_category is not null
+						</otherwise>
+					</choose>
+				</foreach>
+			</when>
+			<when test="jijum_name=='all' and food_category!=null">
+				<foreach collection="food_category" index="index" item="a"
+					open="" close="" separator="">
+					<choose>
+						<when test="index lt food_category.length-1">
+							select distinct(d.jijum_name) as jijum_name from
+							dis_jijum d where d.food_category=#{a} and d.food_category is not
+							null union
+						</when>
+						<otherwise>
+							select distinct(d.jijum_name) as jijum_name from
+							dis_jijum d where d.food_category=#{a} and d.food_category is not
+							null
+						</otherwise>
+					</choose>
+				</foreach>
+			</when>
+			<when test="jijum_name!='all' and food_category==null">
+				select distinct(d.jijum_name) as jijum_name from
+				dis_jijum d where
+				d.jijum_name=#{jijum_name} and d.food_category is
+				not null
+			</when>
+		</choose>
+	</select>
+
+	<select id="select_jijum_category" resultType="hashmap">
+		select jijum_name
+		from jijum
+	</select>
+
+	<select id="select_food_category" resultType="hashmap">
+		select
+		food_category from fd_category
+	</select>
+
+	<select id="select_menu_view" resultType="hashmap">
+		<choose>
+			<when test="jijum_name=='all' and food_category==null">
+				select r.connect_num as connect_num,r.food_name as
+				food_name,r.jijum_name as jijum_name,r.food_content as
+				food_content,r.food_category as food_category,r.con_price as
+				con_price,r.food_image as food_image,r.c as count_rec,CASE
+				round(r.g,2) WHEN 0 THEN null ELSE round(r.g,2) END as
+				avg_grade,r.rev_count as rev_count from count_rev r order by r.c
+				desc,r.g desc,r.rev_count desc
+			</when>
+			<when test="jijum_name!='all' and food_category!=null">
+				select r.connect_num as connect_num,r.food_name as
+				food_name,r.jijum_name as jijum_name,r.food_content as
+				food_content,r.food_category as food_category,r.con_price as
+				con_price,r.food_image as food_image,r.c as count_rec,CASE
+				round(r.g,2) WHEN 0 THEN null ELSE round(r.g,2) END as
+				avg_grade,r.rev_count as rev_count from count_rev r where
+				r.jijum_name=#{jijum_name} and r.food_category IN (
+				<foreach collection="food_category" index="index" item="a"
+					open="" close="" separator="">
+					<choose>
+						<when test="index lt food_category.length-1">
+							#{a},
+						</when>
+						<otherwise>
+							#{a}) order by r.c desc,r.g desc,r.rev_count desc
+						</otherwise>
+					</choose>
+				</foreach>
+			</when>
+			<when test="jijum_name=='all' and food_category!=null">
+				select r.connect_num as connect_num,r.food_name as
+				food_name,r.jijum_name as jijum_name,r.food_content as
+				food_content,r.food_category as food_category,r.con_price as
+				con_price,r.food_image as food_image,r.c as count_rec,CASE
+				round(r.g,2) WHEN 0 THEN null ELSE round(r.g,2) END as
+				avg_grade,r.rev_count as rev_count from count_rev r where
+				r.food_category IN (
+				<foreach collection="food_category" index="index" item="a"
+					open="" close="" separator="">
+					<choose>
+						<when test="index lt food_category.length-1">
+							#{a},
+						</when>
+						<otherwise>
+							#{a}) order by r.c desc,r.g desc,r.rev_count desc
+						</otherwise>
+					</choose>
+				</foreach>
+			</when>
+			<when test="jijum_name!=all and food_category==null">
+				select r.connect_num as connect_num,r.food_name as
+				food_name,r.jijum_name as jijum_name,r.food_content as
+				food_content,r.food_category as food_category,r.con_price as
+				con_price,r.food_image as food_image,r.c as count_rec,CASE
+				round(r.g,2) WHEN 0 THEN null ELSE round(r.g,2) END as
+				avg_grade,r.rev_count as rev_count from count_rev r where
+				r.jijum_name=#{jijum_name} order by r.c desc,r.g desc,r.rev_count
+				desc
+			</when>
+		</choose>
+	</select>
+
+	<select id="getListCount" resultType="integer">
+		<choose>
+			<when test="star!=0">
+				select count(r.rev_num) from rev_board r,connect c
+				where r.connect_num =
+				c.connect_num and c.connect_num =
+				#{connect_num} and
+				r.rev_satisfaction = #{star}
+			</when>
+			<otherwise>
+				select count(r.rev_num) from rev_board r,connect c where
+				r.connect_num =
+				c.connect_num and c.connect_num = #{connect_num}
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="review_select" resultType="hashmap">
+		<bind name="startrow" value="(page - 1) * limit" />
+		<choose>
+			<when test="choice==1">
+				select
+				t.rev_num,t.id,t.connect_num,t.rev_content,t.rev_subject,t.rev_readcount,t.rev_satisfaction,t.rev_date,t.jijum_name
+				from review_select_total t where t.connect_num = #{connect_num}
+				order by
+				t.rev_readcount desc limit #{startrow},#{limit}
+			</when>
+			<when test="choice==3">
+				select
+				t.rev_num,t.id,t.connect_num,t.rev_content,t.rev_subject,t.rev_readcount,t.rev_satisfaction,t.rev_date,t.jijum_name
+				from review_select_total t where t.connect_num = #{connect_num}
+				and
+				t.rev_satisfaction=#{star} limit
+				#{startrow},#{limit}
+			</when>
+			<!-- choice2와 똑같은 조건<최신별로 정렬 -->
+			<otherwise>
+				select
+				t.rev_num,t.id,t.connect_num,t.rev_content,t.rev_subject,t.rev_readcount,t.rev_satisfaction,t.rev_date,t.jijum_name
+				from review_select_total t where t.connect_num = #{connect_num}
+				order by
+				t.rev_date desc limit
+				#{startrow},#{limit}
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="menuViewDetail" resultType="hashmap">
+		select t.connect_num as
+		connect_num,t.food_name as food_name,t.jijum_name as
+		jijum_name,t.food_content as food_content,t.con_price as
+		con_price,t.food_image as food_image,CASE round(t.g,2) WHEN 0 THEN
+		null ELSE round(t.g,2) END as avg_grade,t.c as count_rec from total t
+		where t.connect_num = #{connect_num}
+	</select>
+
+	<select id="board_detail" resultType="hashmap">
+		select r.rev_num as
+		rev_num,r.id as id,r.connect_num as connect_num,r.rev_content as
+		rev_content,r.rev_subject as rev_subject,r.rev_readcount as
+		rev_readcount,r.rev_satisfaction as rev_satisfaction,r.rev_date as
+		rev_date,m.grade as grade,c.jijum_name as jijum_name,c.food_name as
+		food_name from rev_board r left join member m on r.id = m.id left join
+		connect c on r.connect_num = c.connect_num where
+		r.rev_num=#{rev_num}
+	</select>
+
+	<update id="updateCount">
+		update rev_board set
+		rev_readcount=rev_readcount+1
+		where rev_num=#{rev_num}
+	</update>
+	<select id="dupl_check" resultType="integer">
+		select count(g.id) as count
+		from grade g where g.id=#{id} and g.connect_num=#{connect_num};
+	</select>
+	<update id="avg_grade">
+		update grade set
+		grade_grade=#{grade}
+		,grade_date=now() where id=#{id} and
+		connect_num=#{connect_num}
+	</update>
+	<insert id="avg_grade_insert">
+		insert into grade
+		(id,grade_grade,grade_date,connect_num)
+		values(#{id},#{grade},now(),#{connect_num})
+	</insert>
+	<select id="recom_dupl_chk" resultType="integer">
+		select count(r.id) as
+		count from recom r where r.id = #{id} and r.connect_num=
+		#{connect_num}
+	</select>
+	<delete id="recom_del">
+		delete from recom where id=#{id} and
+		connect_num=#{connect_num}
+	</delete>
+	<insert id="recom_add">
+		insert into recom (id,rec_date,connect_num) values
+		(#{id},now(),#{connect_num})
+	</insert>
+	<select id="rev_board_detail" resultType="hashmap">
+		<choose>
+			<when test="id_grade==1">
+				select r.rev_num as rev_num,r.rev_satisfaction as
+				rev_satisfaction,r.id as id,r.rev_date as rev_date,c.jijum_name as
+				jijum_name,c.food_name as food_name, r.rev_subject as
+				rev_subject,r.rev_content as rev_content,m.grade as grade from
+				rev_board r,member m, connect c where r.connect_num = c.connect_num
+				and m.id = r.id and
+				r.rev_num=#{rev_num} and r.id =
+				#{id}
+			</when>
+			<when test="id_grade==2">
+				select r.rev_num as rev_num,r.rev_satisfaction as
+				rev_satisfaction,r.id as id,r.rev_date as rev_date,c.jijum_name as
+				jijum_name,c.food_name as food_name, r.rev_subject as
+				rev_subject,r.rev_content as rev_content,m.grade as grade from
+				rev_board r,member m, connect c where r.connect_num = c.connect_num
+				and m.id = r.id and
+				r.rev_num=#{rev_num}
+			</when>
+		</choose>
+
+	</select>
+	<update id="rev_board_modify">
+		update rev_board set rev_content = #{rev_content} ,rev_subject
+		=#{rev_subject},rev_satisfaction=#{rev_satisfaction} where
+		rev_num=#{rev_num};
+	
+	</update>
+	<insert id="rev_board_write" parameterType="hashmap">
+
+		INSERT INTO rev_board
+		(id,connect_num,rev_content,rev_subject,rev_satisfaction,rev_date)
+		values
+		(#{id},#{connect_num},#{rev_content},#{rev_subject},#{rev_satisfaction},now());
+		<selectKey resultType="int" keyProperty="pk" order="AFTER">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<insert id="rev_board_img_write" parameterType="hashmap">
+
+		INSERT INTO rev_board_image (rev_num,img_name) values
+		(#{pk},#{img_name})
+
+		<!-- <foreach collection="img_name" index="index" item="a" open="" close="" 
+			separator=","> (#{pk},#{a}) </foreach> -->
+	</insert>
+
+	<delete id="rev_board_delete">
+		delete from rev_board where rev_num=#{rev_num}
+	</delete>
+
+	<select id="rev_board_check" resultType="hashmap">
+		select * from rev_board
+		where id=#{id} and rev_num=#{rev_num}
+	</select>
+	<!-- <select id = "selectTest" resultType="hashmap"> select * from member 
+		order by num; </select> <select id = "memberCount" resultType="integer"> 
+		select count(*) from member; </select> <insert id = "regist"> insert into 
+		member(subject,content,curr_date) values(#{subject},#{content},now()); </insert> 
+		<update id="update"> update member set subject = #{subject},content = #{content} 
+		, where num=#{num}; </update> -->
+</mapper>

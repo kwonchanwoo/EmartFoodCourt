@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.TestMapper">
+
+	<select id = "selectTest" resultType="hashmap">
+		select *
+		from member
+		order by num;
+	</select>
+	
+	<select id = "memberCount" resultType="integer">
+		select count(*)
+		from member;
+	</select>
+	<insert id = "regist">
+		insert into member(subject,content,curr_date) values(#{subject},#{content},now());
+	</insert>
+	<update id="update">
+		update member set subject = #{subject},content = #{content} , where num=#{num};
+	</update> 
+</mapper>
