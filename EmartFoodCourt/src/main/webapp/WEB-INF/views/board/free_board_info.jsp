@@ -12,12 +12,8 @@
 <link rel="stylesheet" href="resources/css/common_free_board.css">
 <link rel="stylesheet" href="resources/css/free_board_info.css">
 
-
-
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
-
 
 </head>
 <body>
