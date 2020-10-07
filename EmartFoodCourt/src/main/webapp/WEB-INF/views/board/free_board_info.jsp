@@ -145,11 +145,10 @@
 													type="hidden" name="board_num" id="board_num"
 													value="${free_board.board_num}" readonly>
 												
-													<input type="text" name="reply_content" class="reply_content_class"
-														placeholder="댓글을 입력해주세요." size="66" style="height: 40px;"
-														maxlength="1000">
-												
-												
+												<input type="text" name="reply_content" class="reply_content_class"
+													placeholder="댓글을 입력해주세요." size="66" style="height: 40px;"
+													maxlength="1000">
+																			
 												<input type="hidden" name="reply_re_id" value="${list.id}"
 													readonly> <input type="hidden" name="reply_re_ref"
 													value="${list.reply_re_ref}" readonly> <input
@@ -186,13 +185,8 @@
 	<!-- footer -->
 	<jsp:include page="../footer.jsp" />
 	<!-- //footer -->
-
 	<script type="text/javascript" src="resources/js/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="resources/js/jquery.form.min.js"></script>
 	<script type="text/javascript" src="resources/js/free_board_info.js"></script>
- 
-
-
-
 </body>
 </html>

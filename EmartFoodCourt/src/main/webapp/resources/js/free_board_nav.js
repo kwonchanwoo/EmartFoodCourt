@@ -14,30 +14,27 @@ function wrapWindowByMask(){
     $('#mask').fadeTo("slow",0.5);    
 }
 
-
 $(document).ready(function(){
     //검은 막 띄우기
-	             /*resize: 화면사이즈변화에 따라 발생하는 이벤트*/
-		$(window).resize(function (){
-			if (matchMedia("screen and (min-width: 1066px)").matches) {
-		        $('#mask, .window,.window2').hide();
-				  // 1024px 이상에서 사용할 JavaScript
-				} else if(sessionStorage.getItem("popup_chk")=='true') {
-					 var maskHeight = $(document).height();
-					    var maskWidth = $(window).width();  
-
-					    //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채운다.
-					    $('#mask').css({'width':maskWidth,'height':maskHeight});  
-				}
-		 })
+	/*resize: 화면사이즈변화에 따라 발생하는 이벤트*/
+	$(window).resize(function (){
+		if (matchMedia("screen and (min-width: 1066px)").matches) {
+			$('#mask, .window,.window2').hide();
+			// 1024px 이상에서 사용할 JavaScript
+		} else if(sessionStorage.getItem("popup_chk")=='true') {
+			var maskHeight = $(document).height();
+			var maskWidth = $(window).width();  
+			//마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채운다.
+			$('#mask').css({'width':maskWidth,'height':maskHeight});  
+		}
+	})
 		
-	
-	
     $('.openMask').click(function(e){
         e.preventDefault();
         wrapWindowByMask();
         $('.window').show();
     });
+		
 	$('.free_board_list_icon').click(function(e){
 		 e.preventDefault();
 	     wrapWindowByMask();
@@ -59,20 +56,14 @@ $(document).ready(function(){
     });
 });
 
-
 $( document ).ready( function() {
     var board = $('.free_board_nav').offset();
-    $( window ).scroll( function() {
-       
+    $(window).scroll( function() {
         if ( $( document ).scrollTop() > board.top ) {
-    	  		
-    		  $( '.free_board_nav' ).addClass( 'jbFixed' );
-    	  
-      }
-      else {
-          	
-        $( '.free_board_nav' ).removeClass( 'jbFixed' );
-        
+    		  $( '.free_board_nav' ).addClass( 'jbFixed' );  
+        }
+      else {  	
+        $( '.free_board_nav' ).removeClass( 'jbFixed' );  
       }
     });
   } );
