@@ -31,53 +31,35 @@
 			</div>
 
 			<div id="table">
-
 				<div class="wrap">${free_board.board_content}</div>
 			</div>
-			<div id="vote">
-				
-					<a
-						href="/EmartFoodCourt/boardList_vote_up.bd?board_num=${free_board.board_num}&id=${free_board.id}"><img
-						src="/EmartFoodCourt/resources/images/icon-vote-up.png">${free_board.vote_up}</a>
-				
-				
-					<a
-						href="/EmartFoodCourt/boardList_vote_down.bd?board_num=${free_board.board_num}&id=${free_board.id}"><img
-						src="/EmartFoodCourt/resources/images/icon-vote-up.png"
-						id="vote_down_img">${free_board.vote_down}</a>
-				
 
+			<div id="vote">
+				<a href="/EmartFoodCourt/boardList_vote_up.bd?board_num=${free_board.board_num}&id=${free_board.id}">
+				<img src="/EmartFoodCourt/resources/images/icon-vote-up.png">${free_board.vote_up}</a>
+				<a href="/EmartFoodCourt/boardList_vote_down.bd?board_num=${free_board.board_num}&id=${free_board.id}">
+				<img src="/EmartFoodCourt/resources/images/icon-vote-up.png" id="vote_down_img">${free_board.vote_down}</a>
 			</div>
+			
 			<c:if test="${id_grade==2 || free_board.id==sessionScope.id}">
 				<div id="etc_form">
-					<a
-						href="/EmartFoodCourt/boardList_modForm.bd?board_num=${free_board.board_num}&id=${free_board.id}">수정하기</a>
-					<a href="#"
-						onclick="board_delete_check('${free_board.board_num}','${free_board.id}')">삭제하기</a>
-
+					<a href="/EmartFoodCourt/boardList_modForm.bd?board_num=${free_board.board_num}&id=${free_board.id}">수정하기</a>
+					<a href="#" onclick="board_delete_check('${free_board.board_num}','${free_board.id}')">삭제하기</a>
 				</div>
 			</c:if>
 			<div id="reply">
 				<div class="reply_header">
 					<div id="reply_font">댓글</div>
-					<div id="reply_count">${free_board.ct}</div>
-					개
+					<div id="reply_count">${free_board.ct}개</div>
 					<div id="reply_fresh"></div>
-					<a href="javascript:document.location.reload();"><img
-						src="/EmartFoodCourt/resources/images/icon-refresh@2x.png"
-						width="20px" height="20px">새로고침</a>
+					<a href="javascript:document.location.reload();">
+					<img src="/EmartFoodCourt/resources/images/icon-refresh@2x.png" width="20px" height="20px">새로고침</a>
 				</div>
 			</div>
-			<!-- <div id="reply_header2">
-			인기순&nbsp; 최신순
-			</div> -->
-
-
 
 			<c:if test="${sessionScope.id!=null}">
 				<div class="reply_write_form">
-					<form action="/EmartFoodCourt/boardList_reply_write.bd"
-						enctype="multipart/form-data" method="post" id="reply_form">
+					<form action="/EmartFoodCourt/boardList_reply_write.bd" enctype="multipart/form-data" method="post" id="reply_form">
 						<input type="hidden" name="id" value="${sessionScope.id}" readonly><br>
 						<input type="hidden" name="board_num"
 							value="${free_board.board_num}">
