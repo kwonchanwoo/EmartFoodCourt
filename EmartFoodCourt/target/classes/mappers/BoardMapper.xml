@@ -39,6 +39,7 @@
 			f.board_readcount,
 			f.board_date,
 			f.board_category,
+			ifnull((select sum(vote_up-vote_down) from free_board_vote fv where fv.board_num = f.board_num group by fv.board_num),0) as vote_total,
 			ifnull((select sum(vote_up) from free_board_vote fv where fv.board_num= f.board_num group by fv.board_num),0) as vote_up,
 			ifnull((select sum(vote_down) from free_board_vote fv where fv.board_num= f.board_num group by fv.board_num),0) as vote_down,
 			ifnull((select count(reply_num) from free_board_reply fr where fr.board_num = f.board_num group by fr.board_num),0) as count_reply,
@@ -74,7 +75,7 @@
 		</choose>
 		<choose>
 			<when test="board_orderby=='popularity'">
-				order by vote_up desc
+				order by vote_total desc
 			</when>
 			<when test="board_orderby=='new'">
 				order by f.board_date desc
@@ -98,7 +99,13 @@
 			f.board_category,
 			ifnull((select sum(vote_up) from free_board_vote fv where fv.board_num= f.board_num group by fv.board_num),0) as vote_up,
 			ifnull((select sum(vote_down) from free_board_vote fv where fv.board_num= f.board_num group by fv.board_num),0) as vote_down,
-			ifnull((select count(reply_num) from free_board_reply fr where fr.board_num = f.board_num group by fr.board_num),0) as count_reply
+			ifnull((select count(reply_num) from free_board_reply fr where fr.board_num = f.board_num group by fr.board_num),0) as count_reply,
+			TIMESTAMPDIFF(YEAR,f.board_date,now()) as year,
+			TIMESTAMPDIFF(MONTH,f.board_date,now()) as month,
+			TIMESTAMPDIFF(DAY,f.board_date,now()) as day,
+			TIMESTAMPDIFF(HOUR,f.board_date,now()) as hour,
+			TIMESTAMPDIFF(MINUTe,f.board_date,now()) as minute,
+			TIMESTAMPDIFF(SECOND,f.board_date,now()) as second
 		from free_board f
 		where f.board_num=#{board_num}
 	</select>

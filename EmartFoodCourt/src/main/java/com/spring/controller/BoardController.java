@@ -86,7 +86,6 @@ public class BoardController {
 		value.put("limit", limit);
 
 		int board_count = service.free_board_count(value);
-		System.out.println("board_count : " + board_count);
 		if (board_count % limit == 0) {
 			board_count = board_count / limit;
 		} else {
@@ -504,7 +503,7 @@ public class BoardController {
 		HttpSession session = multi.getSession();
 		PrintWriter out = response.getWriter();
 		String realPath = multi.getSession().getServletContext().getRealPath("/");
-		String filePath = realPath + "resources\\images\\";
+		String filePath = realPath + "resources/images/";
 		if (((String) session.getAttribute("id") == null)) {
 
 			out.println("<script>");
@@ -558,7 +557,9 @@ public class BoardController {
 
 				try {
 					if (!(mf.getOriginalFilename().trim().equals("")) && mf.getOriginalFilename() != null) {
-						originFileName = uploadFile(mf.getOriginalFilename(), mf.getBytes());
+						
+						System.out.println("실제경로 : " + multi.getSession().getServletContext().getRealPath("/"));
+						originFileName = uploadFile(mf.getOriginalFilename(), mf.getBytes(),filePath);
 						mf.transferTo(new File(filePath + originFileName));
 
 						value.put("reply_file", originFileName);
@@ -623,7 +624,7 @@ public class BoardController {
 		HttpSession session = multi.getSession();
 		PrintWriter out = response.getWriter();
 		String realPath = multi.getSession().getServletContext().getRealPath("/");
-		String filePath = realPath + "resources\\images\\";
+		String filePath = realPath + "resources/images/";
 
 		boolean id_check = id_check2(multi.getParameter("id"), (String) session.getAttribute("id"),
 				(int) session.getAttribute("id_grade"));
@@ -655,7 +656,7 @@ public class BoardController {
 
 				try {
 					if (!(mf.getOriginalFilename().trim().equals("")) && mf.getOriginalFilename() != null) {
-						originFileName = uploadFile(mf.getOriginalFilename(), mf.getBytes());
+						originFileName = uploadFile(mf.getOriginalFilename(), mf.getBytes(),filePath);
 						mf.transferTo(new File(filePath + originFileName));
 						value.put("reply_file", originFileName);
 
@@ -776,13 +777,13 @@ public class BoardController {
 		return str;
 	}
 
-	private String uploadFile(String originalName, byte[] fileData) throws Exception {
+	private String uploadFile(String originalName, byte[] fileData,String filePath) throws Exception {
 		// uuid 생성(Universal Unique IDentifier, 범용 고유 식별자)
-		String uploadPath = "C:\\Users\\Administrator\\Documents\\workspace-spring-tool-suite-4-4.5.1.RELEASE\\EmartFoodCourt\\src\\main\\webapp\\resources\\images";
+	        
 		UUID uuid = UUID.randomUUID();
 		// 랜덤생성+파일이름 저장
 		String savedName = uuid.toString() + "_" + originalName;
-		File target = new File(uploadPath, savedName);
+		File target = new File(filePath, savedName);
 		// 임시디렉토리에 저장된 업로드된 파일을 지정된 디렉토리로 복사
 		// File(CopyUtils.copy(바이트배열,파일객체)
 		FileCopyUtils.copy(fileData, target);

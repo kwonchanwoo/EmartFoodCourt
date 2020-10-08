@@ -21,13 +21,56 @@
 	
 	<div class="free_container">
 		<jsp:include page="../board/sidebar.jsp" />
+		
 		<c:forEach var="free_board" items="${free_board}">
 			<div class="header">
-				<div id="board_title">${free_board.board_subject}</div>
-				<div id="board_sub1">${free_board.board_category}|
-					${free_board.board_date} | ${free_board.id}</div>
+				<div id="board_title">
+					${free_board.board_subject}
+				</div>
+				<div id="board_sub1">
+					<c:choose>
+						<c:when test="${free_board.board_category=='notice'}">
+							공지
+						</c:when>
+						<c:when test="${free_board.board_category=='free'}">
+							자유
+						</c:when>
+						<c:when test="${free_board.board_category=='event'}">
+							이벤트
+						</c:when>
+						<c:when test="${free_board.board_category=='humor'}">
+							유머
+						</c:when>
+						<c:when test="${free_board.board_category=='video'}">
+							영상
+						</c:when>
+					</c:choose> |
+					
+					 <c:choose>
+						<c:when test="${free_board.year!=0}">
+							${free_board.year }년전
+						</c:when>
+						<c:when test="${free_board.month!=0}">
+							${free_board.year }달전
+						</c:when>
+						<c:when test="${free_board.day!=0}">
+							${free_board.day }일전
+						</c:when>
+						<c:when test="${free_board.hour!=0}">
+							${free_board.hour }시간전
+						</c:when>
+						<c:when test="${free_board.minute!=0 }">
+							${free_board.minute }분전
+						</c:when>
+						<c:otherwise>
+							${free_board.second}초전
+						</c:otherwise>
+					</c:choose> | 
+					${free_board.id}
+				</div>
+				
 				<div id="board_sub2">조회 ${free_board.board_readcount } | 댓글
-					${free_board.ct} | 추천 ${free_board.vote_up}</div>
+					${free_board.count_reply} | 추천 ${free_board.vote_up}</div>
 			</div>
 
 			<div id="table">
@@ -50,7 +93,7 @@
 			<div id="reply">
 				<div class="reply_header">
 					<div id="reply_font">댓글</div>
-					<div id="reply_count">${free_board.ct}개</div>
+					<div id="reply_count">${free_board.count_reply}개</div>
 					<div id="reply_fresh"></div>
 					<a href="javascript:document.location.reload();">
 					<img src="/EmartFoodCourt/resources/images/icon-refresh@2x.png" width="20px" height="20px">새로고침</a>

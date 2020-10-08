@@ -338,7 +338,7 @@ public class FunctionController {
 					: multi.getParameter("rev_content");
 
 			String realPath = multi.getSession().getServletContext().getRealPath("/");
-			String filePath = realPath + "resources\\images\\";
+			String filePath = realPath + "resources/images/";
 
 			HashMap<String, Object> value = new HashMap<>();
 			value.put("connect_num", connect_num);
@@ -464,7 +464,7 @@ public class FunctionController {
 					: multi.getParameter("rev_content");
 
 			String realPath = multi.getSession().getServletContext().getRealPath("/");
-			String filePath = realPath + "resources\\upload\\";
+			String filePath = realPath + "resources/images/";
 
 			HashMap<String, Object> value = new HashMap<>();
 			value.put("rev_num", rev_num);
@@ -491,7 +491,7 @@ public class FunctionController {
 
 				try {
 					if (!(mFile.getOriginalFilename().trim().equals(""))) {
-						fileName_original = uploadFile(fileName_original, mFile.getBytes());
+						fileName_original = uploadFile(fileName_original, mFile.getBytes(),filePath);
 						mFile.transferTo(new File(file_save_path + fileName_original));
 						value.put("rev_image", fileName_original);
 					}
@@ -606,7 +606,7 @@ public class FunctionController {
 		JSONObject jsonObject = new JSONObject();
 
 		String realPath = multi.getSession().getServletContext().getRealPath("/");
-		String filePath = realPath + "resources\\images\\";
+		String filePath = realPath + "resources/images/";
 		logger.info("filePath : " + filePath);
 		String originalFileName = multipartFile.getOriginalFilename(); // 오리지날 파일명
 		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
@@ -617,7 +617,7 @@ public class FunctionController {
 
 		try {
 			if (!(originalFileName.trim().equals("")) && multipartFile.getOriginalFilename() != null) {
-				originalFileName = uploadFile(originalFileName, multipartFile.getBytes());
+				originalFileName = uploadFile(originalFileName, multipartFile.getBytes(),filePath);
 				multipartFile.transferTo(new File(filePath + originalFileName));
 				jsonObject.put("url", "resources\\images\\" + originalFileName);
 				jsonObject.put("responseCode", "success");
@@ -634,13 +634,13 @@ public class FunctionController {
 
 	// 파일명 랜덤생성 메서드
 
-	private String uploadFile(String originalName, byte[] fileData) throws Exception {
+	private String uploadFile(String originalName, byte[] fileData,String filePath) throws Exception {
 		// uuid 생성(Universal Unique IDentifier, 범용 고유 식별자)
-		String uploadPath = "C:\\Users\\Administrator\\Documents\\workspace-spring-tool-suite-4-4.5.1.RELEASE\\EmartFoodCourt\\src\\main\\webapp\\resources\\images";
+		
 		UUID uuid = UUID.randomUUID();
 		// 랜덤생성+파일이름 저장
 		String savedName = uuid.toString() + "_" + originalName;
-		File target = new File(uploadPath, savedName);
+		File target = new File(filePath, savedName);
 		// 임시디렉토리에 저장된 업로드된 파일을 지정된 디렉토리로 복사
 		// File(CopyUtils.copy(바이트배열,파일객체)
 		FileCopyUtils.copy(fileData, target);

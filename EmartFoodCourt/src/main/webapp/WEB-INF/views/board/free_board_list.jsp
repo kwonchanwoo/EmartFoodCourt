@@ -134,9 +134,9 @@
 							<c:forEach var="list" items="${free_board}">
 							<div class="board_row">
 								<div class="cell col1">
-									<div id="recom_icon">
-										<img src="/EmartFoodCourt/resources/images/icon-vote-up.png">
-									</div>${list.count_vote}
+									<div class="recom_icon">
+										<img src="/EmartFoodCourt/resources/images/icon-vote-up.png">${list.vote_total}
+									</div>
 								</div>
 								
 								<c:choose>
@@ -189,8 +189,8 @@
 								
 								<div class="m_board_row">
 									<div class="cell col1">
-										<div id="recom_icon">
-											<img src="/EmartFoodCourt/resources/images/icon-vote-up.png">${list.count_vote}
+										<div class="recom_icon">
+											<img src="/EmartFoodCourt/resources/images/icon-vote-up.png">${list.vote_total}
 										</div>
 									</div>
 									
@@ -206,7 +206,7 @@
 												공지사항
 											</c:when>
 											<c:when test="${list.board_category=='event'}">
-												이벤트 공지
+												이벤트
 											</c:when>
 											<c:when test="${list.board_category=='free'}">
 												자유
