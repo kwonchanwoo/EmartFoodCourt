@@ -108,7 +108,7 @@
 							value="${free_board.board_num}">
 						<div id="reply_content_div">
 							<input type="text" name="reply_content" placeholder="댓글을 입력해주세요."
-								size="66" style="height: 40px;" maxlength="1000">
+								 style="height: 40px; width:100%;" maxlength="1000">
 						</div>
 						
 						<div class="reply_picture">
