@@ -21,6 +21,10 @@ public interface AdminDao {
 
 	boolean food_add(HashMap<String, Object> value);
 
+	List<HashMap> food_mod_form(HashMap<String, Object> value);
+
+	int food_mod_pro(HashMap<String, Object> value);
+
 
 	
 }

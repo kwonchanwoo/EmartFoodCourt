@@ -89,5 +89,23 @@ public class AdminDaoImpl implements AdminDao {
 		}
 		return result;
 	}
+	@Override
+	public List<HashMap> food_mod_form(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		List<HashMap> val = sqlsession.selectList(namespace+".food_mod_form",value);
+		if(val.isEmpty()){
+			val = null;
+		}
+		return val;
+	}
+	@Override
+	public int food_mod_pro(HashMap<String, Object> value) {
+		Integer val = sqlsession.selectOne(namespace+".food_mod_pro",value);
+		// TODO Auto-generated method stub
+		if(val==null) {
+			val = 0;
+		}
+		return val;
+	}
 
 }

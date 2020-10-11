@@ -23,18 +23,18 @@
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
 		
 		  <!-- 로컬용 접속 -->
- 		<!-- <property name="url" value="jdbc:log4jdbc:mysql://127.0.0.1:3306/testdb?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=UTC&amp;validationQuery=select 1"/>
+ 		  <property name="url" value="jdbc:log4jdbc:mysql://127.0.0.1:3306/testdb?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=UTC&amp;validationQuery=select 1"/>
 		
 		<property name="username" value="root"></property>
 		
-		<property name="password" value="1234"></property>  -->
+		<property name="password" value="1234"></property>  
 		
 		<!-- 서버용 접속 -->
-		 <property name="url"  value="jdbc:log4jdbc:mysql://3.35.126.11:3306/testdb?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=UTC&amp;validationQuery=select 1" />
+		 <!--  <property name="url"  value="jdbc:log4jdbc:mysql://3.35.126.11:3306/testdb?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=UTC&amp;validationQuery=select 1" />
 	
 		<property name="username" value="root"></property>
 		
-		<property name="password" value="rnjsckddn1!"></property> 
+		<property name="password" value="rnjsckddn1!"></property>  -->
 		
 	</bean>
 

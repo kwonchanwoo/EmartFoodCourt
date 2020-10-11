@@ -83,7 +83,6 @@ public class AdminController {
 				value.put("limit", limit);
 				
 				int listCount = service.member_count(value); // 총 리스트 수를 받아옴.
-				System.out.println("listCount : " + listCount);
 				// 총 페이지 수.
 				int maxPage = (int) ((double) listCount / limit + 0.95); // 0.95를 더해서 올림 처리.
 				// 현재 페이지에 보여줄 시작 페이지 수(1, 11, 21 등...)
@@ -117,7 +116,6 @@ public class AdminController {
 		String str = null;
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
-		System.out.println((String) session.getAttribute("id"));
 		if (((String) session.getAttribute("id") == null) || (int) session.getAttribute("id_grade") != 2) {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
@@ -152,7 +150,6 @@ public class AdminController {
 			value.put("limit", limit);
 			
 			int listCount = service.food_count(value); // 총 리스트 수를 받아옴.
-			System.out.println("listCount : " + listCount);
 			List<HashMap> foodList = service.food_list(value);
 			// 총 페이지 수.
 			int maxPage = (int) ((double) listCount / limit + 0.95); // 0.95를 더해서 올림 처리.
@@ -247,9 +244,9 @@ public class AdminController {
 			}
 
 			List<MultipartFile> fileList = multi.getFiles("food_image");
-			logger.info("file 갯수 :" + fileList.size());
+
 			int fileSize = fileList.size();
-			System.out.println("fileSize : " + fileSize);
+
 
 			HashMap<String,Object> value = new HashMap<>();
 			value.put("food_name", multi.getParameter("food_name"));
@@ -300,6 +297,108 @@ public class AdminController {
 			} else {
 				out.println("<script>");
 				out.println("alert('음식을 등록하는데 실패하였습니다.')");
+				out.println("history.back();");
+				out.println("</script>");
+			}
+		}
+		return str;
+	}
+	
+	@RequestMapping(value="foodModForm.ad",method= {RequestMethod.POST,RequestMethod.GET})
+	String food_modForm(HttpServletRequest request,HttpServletResponse response)throws Exception{
+		String str = null;
+		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		int page = Integer.parseInt(request.getParameter("page"));
+		if (((String) session.getAttribute("id") == null) || (int) session.getAttribute("id_grade") != 2) {
+			response.setContentType("text/html;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('관리자로 로그인하세요!!!')");
+			out.println("location.href='memberLogin.me'");
+			out.println("</script>");
+		} else {
+			int connect_num = Integer.parseInt(request.getParameter("connect_num"));
+			HashMap<String,Object> value = new HashMap<>();
+			value.put("connect_num", connect_num);
+			List<HashMap> total = service.food_mod_form(value);
+			List<HashMap> food = service.select_food();
+			List<HashMap> jijum = service.select_jijum();
+			if (total != null) {
+				request.setAttribute("food", food);
+				request.setAttribute("jijum", jijum);
+				request.setAttribute("total", total);
+				request.setAttribute("page", page);
+				str="admin/food_mod";
+			} else {
+				response.setContentType("text/html;charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>");
+				out.println("alert('화면을 불러올수없습니다..!')");
+				out.println("location.href='/EmartFoodCourt/index.jsp'");
+				out.println("</script>");
+			}
+		}
+		return str;
+	}
+	
+	@RequestMapping(value="foodModPro.ad", method= {RequestMethod.POST})
+	String food_modPro(MultipartHttpServletRequest multi, HttpServletResponse response) throws Exception{
+		String str = null;
+		PrintWriter out = response.getWriter();
+		multi.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		String realPath = multi.getSession().getServletContext().getRealPath("/");
+		String filePath = realPath + "resources/images/";
+		
+		HttpSession session = multi.getSession();
+		if (((String) session.getAttribute("id") == null) || ((int) session.getAttribute("id_grade")) != 2) {
+			response.setContentType("text/html;charset=UTF-8");
+			
+			out.println("<script>");
+			out.println("alert('관리자 아이디로 접속해주십시오!')");
+			out.println("location.href='/EmartFoodCourt/memberLogin.me';");
+			out.println("</script>");
+		} else {
+			
+			List<MultipartFile> fileList = multi.getFiles("food_image");			
+
+			String food_name = multi.getParameter("food_name");
+			String old_food_name = multi.getParameter("old_food_name");
+			String food_category = multi.getParameter("food_category");
+			String jijum_name = multi.getParameter("jijum_name");
+			int connect_num = Integer.parseInt(multi.getParameter("connect_num"));
+			
+			HashMap<String,Object> value = new HashMap<>();
+			value.put("food_name",food_name);
+			value.put("old_food_name", old_food_name);
+			value.put("food_category", food_category);
+			value.put("jijum_name", jijum_name);
+			value.put("connect_num", connect_num);
+			value.put("con_price", multi.getParameter("con_price"));
+			value.put("food_content", multi.getParameter("food_content"));
+			if (multi.getParameter("img_check").equals("true")) { // 아이디를 input text로받는지 file로받는지 구분하는 값
+				
+				if (fileList.size()==0) {
+					value.put("food_image", "logo.png");
+				} else {
+					String food_image = uploadFile(fileList.get(0).getOriginalFilename(),fileList.get(0).getBytes(),filePath);
+					value.put("food_image", food_image);
+				}
+			} else {
+				value.put("food_image",multi.getParameter("food_image"));
+			}
+			int page = Integer.parseInt(multi.getParameter("page"));
+			int isModFood = service.food_mod_pro(value);
+			if (isModFood>0) {
+				
+				out.println("<script>");
+				out.println("alert('음식이 수정되었습니다.')");
+				out.println("location.href='foodList.ad?page=" + page + "';");
+				out.println("</script>");
+			} else {
+				out.println("<script>");
+				out.println("alert('지점에 이미있는 음식이거나 잘못 수정하셨습니다.')");
 				out.println("history.back();");
 				out.println("</script>");
 			}

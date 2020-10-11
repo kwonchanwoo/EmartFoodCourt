@@ -120,9 +120,7 @@
 			f.reply_re_seq as reply_re_seq,
 			f.reply_re_id as reply_re_id,
 			f.reply_date as reply_date,
-			f.reply_file as reply_file,
-			'0' as ct,
-			f.reply_re_ck as reply_re_ck 
+			f.reply_file as reply_file
 		from free_board_reply f 
 		where f.board_num=#{board_num} 
 		order by f.reply_re_ref desc,f.reply_re_seq asc
@@ -198,7 +196,7 @@
 		f.reply_re_seq=f.reply_re_seq+1 where
 		f.reply_re_ref=#{reply_re_ref}
 		and f.reply_re_seq>#{reply_re_seq};
-		update free_board_reply f set f.reply_re_ck=f.reply_re_ck+1 where f.reply_re_seq=0 and f.reply_re_ref=#{reply_re_ref};
+		
 	</update>
 	<update id="board_reply_modify">
 		<choose>
@@ -212,7 +210,15 @@
 		</choose>
 	</update>
 	<delete id= "board_reply_delete">
-		delete from free_board_reply where reply_num = #{reply_num}	
+		<choose>
+			<when test="reply_re_seq==0">
+				delete from free_board_reply where reply_re_ref=#{reply_re_ref}	
+			</when>
+			<otherwise>
+				delete from free_board_reply where reply_num = #{reply_num}	
+			</otherwise>
+		</choose>
+		
 	</delete>
 	<update id="free_board_date_update">
 		update free_board f set

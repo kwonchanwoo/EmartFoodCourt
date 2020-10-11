@@ -721,8 +721,14 @@ public class BoardController {
 
 		int id_grade = (int) session.getAttribute("id_grade");
 		int reply_num = Integer.parseInt(request.getParameter("reply_num"));
+		int reply_re_ref = Integer.parseInt(request.getParameter("reply_re_ref"));
+		int reply_re_seq = Integer.parseInt(request.getParameter("reply_re_seq"));
+		System.out.println("reply_re_ref : " + reply_re_ref);
+		System.out.println("reply_re_seq : " + reply_re_seq);
 		HashMap<String, Object> value = new HashMap<>();
 		value.put("reply_num", reply_num);
+		value.put("reply_re_ref",reply_re_ref);
+		value.put("reply_re_seq",reply_re_seq);
 		if (((String) session.getAttribute("id") == null)) {
 
 			out.println("<script>");

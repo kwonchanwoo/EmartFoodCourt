@@ -158,7 +158,7 @@
 										</c:choose>
 									</div>
 									<c:if test="${list.reply_re_id!=null}">
-										<div id="bg3">${list.reply_re_id}</div>
+										<div id="bg3">${list.reply_re_id}에게</div>
 									</c:if>
 									${list.reply_content}
 								</div>
@@ -168,13 +168,13 @@
 
 										<c:if test="${list.id==sessionScope.id || id_grade==2}">
 											<a href="javascript:reply_write_create(${count},2,'${list.reply_content}');">수정</a>&nbsp;
-													<c:choose>
-												<c:when test="${list.reply_re_ck==0 }">
+													
+												
 													<a
-														href="javascript:reply_delete('${list.id}',${list.reply_num},${list.board_num});">삭제</a>
-												</c:when>
+														href="javascript:reply_delete('${list.id}',${list.reply_num},${list.board_num},${list.reply_re_ref},${list.reply_re_seq});">삭제</a>
+												
 
-											</c:choose>
+											
 
 										</c:if>
 

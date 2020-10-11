@@ -6,12 +6,12 @@ function board_delete_check(board_num,id){
 		location.href="/EmartFoodCourt/boardList_delete.bd?board_num="+board_num+"&id="+id
 	}
 }
-function reply_delete(id, reply_num, board_num) {
+function reply_delete(id, reply_num, board_num,reply_re_ref,reply_re_seq) {
 	var check = confirm("댓글을 삭제하시겠습니까?");
 	if(check==true){
 		$.ajax({
 			url : "/EmartFoodCourt/boardList_reply_delete.bd?id=" + id
-					+ "&reply_num=" + reply_num + "&board_num=" + board_num,
+					+ "&reply_num=" + reply_num + "&board_num=" + board_num + "&reply_re_ref=" + reply_re_ref + "&reply_re_seq=" + reply_re_seq,
 			type : "post",
 			contentType : "application/x-www-form-urlencoded; charset=utf-8",
 			datatype : "json",

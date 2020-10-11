@@ -65,6 +65,18 @@ public class AdminServiceImpl implements AdminService {
 		return dao.food_add(value);
 	}
 
+	@Override
+	public List<HashMap> food_mod_form(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		return dao.food_mod_form(value);
+	}
+
+	@Override
+	public int food_mod_pro(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		return dao.food_mod_pro(value);
+	}
+
 	
 
 	

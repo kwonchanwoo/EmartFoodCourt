@@ -74,5 +74,11 @@
 	call food_count(#{food_name},#{food_category},#{jijum_name},#{food_image},#{food_content},#{con_price},@RESULT);
 select @RESULT;
 </select>
-
+<select id="food_mod_form" resultType="hashmap">
+	select t.connect_num,t.food_name,t.jijum_name,t.food_content,t.food_category,t.con_price,t.food_image from total t where t.connect_num=#{connect_num}
+</select>
+<select id="food_mod_pro" resultType="Integer">
+	call food_mod(#{old_food_name},#{food_name},#{food_category},#{jijum_name},#{connect_num},#{con_price},#{food_content},#{food_image},@result);
+	select @result;
+</select>
 </mapper>
