@@ -77,7 +77,31 @@ public class AdminServiceImpl implements AdminService {
 		return dao.food_mod_pro(value);
 	}
 
-	
+	@Override
+	public int food_delete(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		return dao.food_delete(value);
+	}
+
+	@Override
+	public int jijum_count(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		return dao.jijum_count(value);
+	}
+
+	@Override
+	public List<HashMap> jijum_list(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		return dao.jijum_list(value);
+	}
+
+	@Override
+	public List<HashMap> jijum_info(HashMap<String,Object> value) {
+		// TODO Auto-generated method stub
+		return dao.jijum_info(value);
+	}
+
+
 
 	
 

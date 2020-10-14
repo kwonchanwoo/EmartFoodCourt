@@ -20,7 +20,6 @@ function reply_delete(id, reply_num, board_num,reply_re_ref,reply_re_seq) {
 						+ request.responseText + "\n" + "error:" + error);
 			},
 			success : function(result) {
-				alert("삭제되었습니다.");
 				document.location.reload();
 			}
 		})

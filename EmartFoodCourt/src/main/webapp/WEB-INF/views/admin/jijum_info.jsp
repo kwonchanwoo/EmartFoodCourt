@@ -27,7 +27,7 @@ table {
 }
 
 #btn:hover {
-	content: url('/EmartFoodCourt/images/backbutton_after.jpg');
+	content: url('/EmartFoodCourt/resources/images/backbutton_after.jpg');
 }
 @media ( max-width : 505px) {
 	table {
@@ -46,6 +46,7 @@ table {
 	<jsp:include page="../admin/admin.jsp" /><br>
 	<div id="command">
 		<c:if test="${total!=null}">
+			<c:forEach var="total" items="${total}">
 			<h1>${total.jijum_name}</h1>
 
 			<table>
@@ -111,11 +112,12 @@ table {
 				<font color="green">지점 소개 </font>
 			</h3> ${total.jijum_intro}<br>
 			<a href="/EmartFoodCourt/jijumList.ad?page=${nowPage}&choice=${param.choice}&search=${param.search}"><img
-				src="/EmartFoodCourt/images/backbutton_before.jpg" width="50px"
+				src="/EmartFoodCourt/resources/images/backbutton_before.jpg" width="50px"
 				height="50px" id="btn"></a>
 			<br>
-
+			</c:forEach>
 		</c:if>
+		
 	</div>
 	<!-- footer -->
 	<jsp:include page="../footer.jsp" />

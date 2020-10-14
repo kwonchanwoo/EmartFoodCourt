@@ -3,7 +3,7 @@ package com.spring.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -30,9 +30,10 @@ public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(FunctionController.class);
 	@Inject
 	AdminService service;
-	@RequestMapping(value="admin.ad",method= {RequestMethod.POST,RequestMethod.GET})
-	public String admin(HttpServletRequest request,HttpServletResponse response) throws Exception{
-		String str =null;
+
+	@RequestMapping(value = "admin.ad", method = { RequestMethod.POST, RequestMethod.GET })
+	public String admin(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String str = null;
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
@@ -40,79 +41,77 @@ public class AdminController {
 		str = "admin/admin";
 		return str;
 	}
-	
-	@RequestMapping(value="memberList.ad",method= {RequestMethod.POST,RequestMethod.GET})
-		public String member_management(HttpServletRequest request,HttpServletResponse response) throws Exception{
-			String str = null;
-			request.setCharacterEncoding("UTF-8");
-			HttpSession session = request.getSession();
-			if ((String) session.getAttribute("id") == null || (int) session.getAttribute("id_grade") != 2) {
-				response.setContentType("text/html;charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				out.println("<script>");
-				out.println("alert('관리자로 로그인하세요!!!')");
-				out.println("location.href='memberLogin.me'");
-				out.println("</script>");
+
+	@RequestMapping(value = "memberList.ad", method = { RequestMethod.POST, RequestMethod.GET })
+	public String member_management(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String str = null;
+		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		if ((String) session.getAttribute("id") == null || (int) session.getAttribute("id_grade") != 2) {
+			response.setContentType("text/html;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('관리자로 로그인하세요!!!')");
+			out.println("location.href='memberLogin.me'");
+			out.println("</script>");
+		} else {
+			HashMap<String, Object> value = new HashMap<>();
+			// 페이지 계산하기
+			int limit = 5; // 페이지에 보여줄 목록 수
+			int limitpage = 5; // 페이지수
+			int page = 1;
+			String choice;
+			String search;
+			if (request.getParameter("choice") == null || request.getParameter("choice").trim().equals("")) {
+				choice = null;
 			} else {
-				HashMap<String,Object> value = new HashMap<>();
-				// 페이지 계산하기
-				int limit = 5; // 페이지에 보여줄 목록 수
-				int limitpage = 5; // 페이지수
-				int page = 1;
-				String choice;
-				String search;
-				if(request.getParameter("choice")==null || request.getParameter("choice").trim().equals("")) {
-					choice = null;
-				}else {
-					choice = request.getParameter("choice");
-				}
-				if(request.getParameter("search")==null || request.getParameter("search").trim().equals("")) {
-					search=null;
-				}else {
-					search = request.getParameter("search");
-				}
-				
-				
-				
-				if (request.getParameter("page") != null) {
-					page = Integer.parseInt(request.getParameter("page"));
-				}
-				value.put("choice",choice);
-				value.put("search", search);
-				value.put("page", page);
-				value.put("limit", limit);
-				
-				int listCount = service.member_count(value); // 총 리스트 수를 받아옴.
-				// 총 페이지 수.
-				int maxPage = (int) ((double) listCount / limit + 0.95); // 0.95를 더해서 올림 처리.
-				// 현재 페이지에 보여줄 시작 페이지 수(1, 11, 21 등...)
-				int startPage = (((int) ((double) page / limitpage + 0.9)) - 1) * limitpage + 1;
-				// 현재 페이지에 보여줄 마지막 페이지 수.(10, 20, 30 등...)
-				int endPage = startPage + limitpage - 1;
-
-				if (endPage > maxPage)
-					endPage = maxPage;
-				// 페이지설정하기
-				
-				request.setAttribute("endPage", endPage);
-				request.setAttribute("listCount", listCount);
-				request.setAttribute("maxPage", maxPage);
-				request.setAttribute("nowPage", page);
-				request.setAttribute("startPage", startPage);
-
-				List<HashMap> memberList = service.memberList(value);	
-				request.setAttribute("choice", choice);
-				request.setAttribute("search", search);
-				request.setAttribute("memberList", memberList);
-
-				str="admin/member_list";
-				
+				choice = request.getParameter("choice");
 			}
-			return str;
+			if (request.getParameter("search") == null || request.getParameter("search").trim().equals("")) {
+				search = null;
+			} else {
+				search = request.getParameter("search");
+			}
+
+			if (request.getParameter("page") != null) {
+				page = Integer.parseInt(request.getParameter("page"));
+			}
+			value.put("choice", choice);
+			value.put("search", search);
+			value.put("page", page);
+			value.put("limit", limit);
+
+			int listCount = service.member_count(value); // 총 리스트 수를 받아옴.
+			// 총 페이지 수.
+			int maxPage = (int) ((double) listCount / limit + 0.95); // 0.95를 더해서 올림 처리.
+			// 현재 페이지에 보여줄 시작 페이지 수(1, 11, 21 등...)
+			int startPage = (((int) ((double) page / limitpage + 0.9)) - 1) * limitpage + 1;
+			// 현재 페이지에 보여줄 마지막 페이지 수.(10, 20, 30 등...)
+			int endPage = startPage + limitpage - 1;
+
+			if (endPage > maxPage)
+				endPage = maxPage;
+			// 페이지설정하기
+
+			request.setAttribute("endPage", endPage);
+			request.setAttribute("listCount", listCount);
+			request.setAttribute("maxPage", maxPage);
+			request.setAttribute("nowPage", page);
+			request.setAttribute("startPage", startPage);
+
+			List<HashMap> memberList = service.memberList(value);
+			request.setAttribute("choice", choice);
+			request.setAttribute("search", search);
+			request.setAttribute("memberList", memberList);
+
+			str = "admin/member_list";
+
 		}
-		
-	@RequestMapping(value="foodList.ad",method= {RequestMethod.POST,RequestMethod.GET})
-	String food_list(HttpServletRequest request,HttpServletResponse response) throws Exception{
+		return str;
+	}
+
+	@RequestMapping(value = "foodList.ad", method = { RequestMethod.POST, RequestMethod.GET })
+	String food_list(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String str = null;
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
@@ -124,8 +123,7 @@ public class AdminController {
 			out.println("location.href='memberLogin.me'");
 			out.println("</script>");
 		} else {
-			HashMap<String,Object> value = new HashMap<>();
-			
+			HashMap<String, Object> value = new HashMap<>();
 
 			// 페이지 계산하기
 			int page = 1;
@@ -137,18 +135,18 @@ public class AdminController {
 			if (request.getParameter("page") != null) {
 				page = Integer.parseInt(request.getParameter("page"));
 			}
-			if(choice==null || choice.trim().equals("")) {
-				choice=null;
+			if (choice == null || choice.trim().equals("")) {
+				choice = null;
 			}
-			if(search==null || search.trim().equals("")) {
-				search=null;
+			if (search == null || search.trim().equals("")) {
+				search = null;
 			}
-			
-			value.put("choice",choice);
+
+			value.put("choice", choice);
 			value.put("search", search);
 			value.put("page", page);
 			value.put("limit", limit);
-			
+
 			int listCount = service.food_count(value); // 총 리스트 수를 받아옴.
 			List<HashMap> foodList = service.food_list(value);
 			// 총 페이지 수.
@@ -166,19 +164,18 @@ public class AdminController {
 			request.setAttribute("maxPage", maxPage);
 			request.setAttribute("nowPage", page);
 			request.setAttribute("startPage", startPage);
-			
-			
+
 			request.setAttribute("choice", choice);
 			request.setAttribute("search", search);
 			request.setAttribute("foodList", foodList);
-			
-			str="admin/food_list";
+
+			str = "admin/food_list";
 		}
 		return str;
 	}
-	
-	@RequestMapping(value="foodInfo.ad", method= {RequestMethod.POST,RequestMethod.GET})
-	String food_info(HttpServletRequest request,HttpServletResponse response) throws Exception{
+
+	@RequestMapping(value = "foodInfo.ad", method = { RequestMethod.POST, RequestMethod.GET })
+	String food_info(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String str = null;
 		HttpSession session = request.getSession();
 		if (((String) session.getAttribute("id") == null) || ((int) session.getAttribute("id_grade")) != 2) {
@@ -191,20 +188,21 @@ public class AdminController {
 		} else {
 			int connect_num = Integer.parseInt(request.getParameter("connect_num"));
 			int page = Integer.parseInt(request.getParameter("page"));
-			HashMap<String,Object> value = new HashMap<>();
+			HashMap<String, Object> value = new HashMap<>();
 			value.put("connect_num", connect_num);
 			List<HashMap> total = service.food_info(value);
 			request.setAttribute("total", total);
 			request.setAttribute("page", page);
 			request.setAttribute("search", request.getAttribute("search"));
 			request.setAttribute("choice", request.getAttribute("choice"));
-		
-			str="admin/food_info";
+
+			str = "admin/food_info";
 		}
 		return str;
 	}
-	@RequestMapping(value="foodAddForm.ad",  method= {RequestMethod.POST,RequestMethod.GET})
-	String food_addForm(HttpServletRequest request,HttpServletResponse response) throws Exception{
+
+	@RequestMapping(value = "foodAddForm.ad", method = { RequestMethod.POST, RequestMethod.GET })
+	String food_addForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String str = null;
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
@@ -224,8 +222,9 @@ public class AdminController {
 		}
 		return str;
 	}
-	@RequestMapping(value="foodAddPro.ad",method= {RequestMethod.POST,RequestMethod.GET})
-	String food_proForm(MultipartHttpServletRequest multi,HttpServletResponse response) throws Exception{
+
+	@RequestMapping(value = "foodAddPro.ad", method = { RequestMethod.POST, RequestMethod.GET })
+	String food_proForm(MultipartHttpServletRequest multi, HttpServletResponse response) throws Exception {
 		String str = null;
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
@@ -247,12 +246,11 @@ public class AdminController {
 
 			int fileSize = fileList.size();
 
-
-			HashMap<String,Object> value = new HashMap<>();
+			HashMap<String, Object> value = new HashMap<>();
 			value.put("food_name", multi.getParameter("food_name"));
 			value.put("food_category", multi.getParameter("food_category"));
 			value.put("jijum_name", multi.getParameter("jijum_name"));
-			
+
 			for (MultipartFile mf : fileList) {
 
 				String originFileName;
@@ -260,7 +258,7 @@ public class AdminController {
 
 				try {
 					if (!(mf.getOriginalFilename().trim().equals("")) && mf.getOriginalFilename() != null) {
-						originFileName = uploadFile(mf.getOriginalFilename(), mf.getBytes(),filePath);
+						originFileName = uploadFile(mf.getOriginalFilename(), mf.getBytes(), filePath);
 						mf.transferTo(new File(filePath + originFileName));
 
 						value.put("food_image", originFileName);
@@ -272,7 +270,7 @@ public class AdminController {
 						logger.debug("size : " + mf.getSize());
 						logger.debug("-------------- file end --------------\n");
 
-					}else {
+					} else {
 						value.put("food_image", "logo.png");
 					}
 
@@ -282,9 +280,8 @@ public class AdminController {
 					e.printStackTrace();
 				}
 			}
-			
-			
-			value.put("food_name",multi.getParameter("food_name"));
+
+			value.put("food_name", multi.getParameter("food_name"));
 			value.put("jijum_name", multi.getParameter("jijum_name"));
 			value.put("con_price", multi.getParameter("con_price"));
 			value.put("food_content", multi.getParameter("food_content"));
@@ -303,9 +300,9 @@ public class AdminController {
 		}
 		return str;
 	}
-	
-	@RequestMapping(value="foodModForm.ad",method= {RequestMethod.POST,RequestMethod.GET})
-	String food_modForm(HttpServletRequest request,HttpServletResponse response)throws Exception{
+
+	@RequestMapping(value = "foodModForm.ad", method = { RequestMethod.POST, RequestMethod.GET })
+	String food_modForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String str = null;
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
@@ -319,7 +316,7 @@ public class AdminController {
 			out.println("</script>");
 		} else {
 			int connect_num = Integer.parseInt(request.getParameter("connect_num"));
-			HashMap<String,Object> value = new HashMap<>();
+			HashMap<String, Object> value = new HashMap<>();
 			value.put("connect_num", connect_num);
 			List<HashMap> total = service.food_mod_form(value);
 			List<HashMap> food = service.select_food();
@@ -329,7 +326,7 @@ public class AdminController {
 				request.setAttribute("jijum", jijum);
 				request.setAttribute("total", total);
 				request.setAttribute("page", page);
-				str="admin/food_mod";
+				str = "admin/food_mod";
 			} else {
 				response.setContentType("text/html;charset=UTF-8");
 				PrintWriter out = response.getWriter();
@@ -341,36 +338,36 @@ public class AdminController {
 		}
 		return str;
 	}
-	
-	@RequestMapping(value="foodModPro.ad", method= {RequestMethod.POST})
-	String food_modPro(MultipartHttpServletRequest multi, HttpServletResponse response) throws Exception{
+
+	@RequestMapping(value = "foodModPro.ad", method = { RequestMethod.POST })
+	String food_modPro(MultipartHttpServletRequest multi, HttpServletResponse response) throws Exception {
 		String str = null;
 		PrintWriter out = response.getWriter();
 		multi.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		String realPath = multi.getSession().getServletContext().getRealPath("/");
 		String filePath = realPath + "resources/images/";
-		
+
 		HttpSession session = multi.getSession();
 		if (((String) session.getAttribute("id") == null) || ((int) session.getAttribute("id_grade")) != 2) {
 			response.setContentType("text/html;charset=UTF-8");
-			
+
 			out.println("<script>");
 			out.println("alert('관리자 아이디로 접속해주십시오!')");
 			out.println("location.href='/EmartFoodCourt/memberLogin.me';");
 			out.println("</script>");
 		} else {
-			
-			List<MultipartFile> fileList = multi.getFiles("food_image");			
+
+			List<MultipartFile> fileList = multi.getFiles("food_image");
 
 			String food_name = multi.getParameter("food_name");
 			String old_food_name = multi.getParameter("old_food_name");
 			String food_category = multi.getParameter("food_category");
 			String jijum_name = multi.getParameter("jijum_name");
 			int connect_num = Integer.parseInt(multi.getParameter("connect_num"));
-			
-			HashMap<String,Object> value = new HashMap<>();
-			value.put("food_name",food_name);
+
+			HashMap<String, Object> value = new HashMap<>();
+			value.put("food_name", food_name);
 			value.put("old_food_name", old_food_name);
 			value.put("food_category", food_category);
 			value.put("jijum_name", jijum_name);
@@ -378,20 +375,21 @@ public class AdminController {
 			value.put("con_price", multi.getParameter("con_price"));
 			value.put("food_content", multi.getParameter("food_content"));
 			if (multi.getParameter("img_check").equals("true")) { // 아이디를 input text로받는지 file로받는지 구분하는 값
-				
-				if (fileList.size()==0) {
+
+				if (fileList.size() == 0) {
 					value.put("food_image", "logo.png");
 				} else {
-					String food_image = uploadFile(fileList.get(0).getOriginalFilename(),fileList.get(0).getBytes(),filePath);
+					String food_image = uploadFile(fileList.get(0).getOriginalFilename(), fileList.get(0).getBytes(),
+							filePath);
 					value.put("food_image", food_image);
 				}
 			} else {
-				value.put("food_image",multi.getParameter("food_image"));
+				value.put("food_image", multi.getParameter("food_image"));
 			}
 			int page = Integer.parseInt(multi.getParameter("page"));
 			int isModFood = service.food_mod_pro(value);
-			if (isModFood>0) {
-				
+			if (isModFood > 0) {
+
 				out.println("<script>");
 				out.println("alert('음식이 수정되었습니다.')");
 				out.println("location.href='foodList.ad?page=" + page + "';");
@@ -405,8 +403,157 @@ public class AdminController {
 		}
 		return str;
 	}
+
+	@RequestMapping(value = "foodDelete.ad", method = { RequestMethod.GET })
+	String food_delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String str = null;
+		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		response.setContentType("text/html;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		if (((String) session.getAttribute("id") == null) || (int) session.getAttribute("id_grade") != 2) {
+			out.println("<script>");
+			out.println("alert('관리자로 로그인하세요!!!')");
+			out.println("location.href='memberLogin.me'");
+			out.println("</script>");
+		} else {
+			int connect_num = Integer.parseInt(request.getParameter("connect_num"));
+			String food_name = request.getParameter("food_name");
+			HashMap<String, Object> value = new HashMap<>();
+			value.put("connect_num", connect_num);
+			value.put("food_name", food_name);
+			int isDelete = service.food_delete(value);
+			if (isDelete > 0) {
+				out.println("<script>");
+				out.println("alert('음식이 삭제되었습니다.')");
+				out.println("location.href='foodList.ad';");
+				out.println("</script>");
+			} else {
+				out.println("<script>");
+				out.println("alert('음식을 삭제하는데 오류가 발생하였습니다.')");
+				out.println("location.href='foodList.ad';");
+				out.println("</script>");
+			}
+		}
+		return str;
+	}
 	
-	private String uploadFile(String originalName, byte[] fileData,String filePath) throws Exception {
+	@RequestMapping(value ="jijumList.ad", method= {RequestMethod.GET,RequestMethod.POST})
+	String jijum_list(HttpServletRequest request,HttpServletResponse response) throws Exception{
+		String str = null;
+		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		System.out.println((String) session.getAttribute("id"));
+		if (((String) session.getAttribute("id") == null) || (int) session.getAttribute("id_grade") != 2) {
+			response.setContentType("text/html;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('관리자로 로그인하세요!!!')");
+			out.println("location.href='memberLogin.me'");
+			out.println("</script>");
+		} else {
+
+			// 페이지 계산하기
+			int page = 1;
+			int limit = 5; // 페이지에 보여줄 지점 목록 수
+			int limitpage = 5; // 페이지수
+			String choice = request.getParameter("choice");
+			if(choice==null || choice.trim().equals("")) {
+				choice = null;
+			}
+
+			String search = request.getParameter("search");
+			if(search==null || search.trim().equals("")) {
+				search = null;
+			}
+
+			if (request.getParameter("page") != null) {
+				page = Integer.parseInt(request.getParameter("page"));
+			}
+			HashMap<String,Object> value = new HashMap<>();
+			value.put("choice", choice);
+			value.put("search", search);
+			value.put("page", page);
+			value.put("limit", limit);
+			int listCount = service.jijum_count(value); // 총 리스트 수를 받아옴.
+			// 총 페이지 수.
+			int maxPage = (int) ((double) listCount / limit + 0.95); // 0.95를 더해서 올림 처리.
+			// 현재 페이지에 보여줄 시작 페이지 수(1, 11, 21 등...)
+			int startPage = (((int) ((double) page / limitpage + 0.9)) - 1) * limitpage + 1;
+			// 현재 페이지에 보여줄 마지막 페이지 수.(10, 20, 30 등...)
+			int endPage = startPage + limitpage - 1;
+
+			if (endPage > maxPage)
+				endPage = maxPage;
+			// 페이지설정하기
+			request.setAttribute("endPage", endPage);
+			request.setAttribute("listCount", listCount);
+			request.setAttribute("maxPage", maxPage);
+			request.setAttribute("nowPage", page);
+			request.setAttribute("startPage", startPage);
+			
+			List<HashMap> jijumList = service.jijum_list(value);
+			request.setAttribute("choice", choice);
+			request.setAttribute("search", search);
+			request.setAttribute("jijumList", jijumList);	
+			str = "admin/jijum_list";
+		}
+		return str;
+	}
+	
+	@RequestMapping(value="jijumInfo.ad", method= {RequestMethod.GET})
+	String jijum_info(HttpServletRequest request,HttpServletResponse response) throws Exception{
+		String str = null;
+		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		if (((String) session.getAttribute("id") == null) || ((int) session.getAttribute("id_grade")) != 2) {
+			response.setContentType("text/html;charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('관리자로 로그인하세요!!!')");
+			out.println("location.href='memberLogin.me'");
+			out.println("</script>");
+		} else {
+			String jijum_name = request.getParameter("jijum_name");
+			int page = 1;
+			if(request.getParameter("page") ==null || request.getParameter("page").trim().equals("")) {
+				 page = 1;
+			}else {
+				page =  Integer.parseInt(request.getParameter("page"));
+			}
+			HashMap<String,Object> value = new HashMap<>();
+			value.put("jijum_name", jijum_name);
+			List<HashMap> total = service.jijum_info(value);
+			System.out.println("total : " + total);
+			request.setAttribute("total", total);
+			request.setAttribute("page", page);
+			str="admin/jijum_info";
+		}
+		return str;
+	}
+	
+	@RequestMapping(value = "jijumAddForm.ad", method = { RequestMethod.GET })
+	String jijum_addForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String str = null;
+		request.setCharacterEncoding("UTF-8");
+		PrintWriter out = response.getWriter();
+		HttpSession session = request.getSession();
+		System.out.println((String) session.getAttribute("id"));
+		if (((String) session.getAttribute("id") == null) || (int) session.getAttribute("id_grade") != 2) {
+			response.setContentType("text/html;charset=UTF-8");
+			out.println("<script>");
+			out.println("alert('관리자로 로그인하세요!!!')");
+			out.println("location.href='memberLogin.me'");
+			out.println("</script>");
+		} else {
+			str = "admin/jijum_add";
+		}
+		return str;
+	}
+	
+	
+	
+	private String uploadFile(String originalName, byte[] fileData, String filePath) throws Exception {
 		// uuid 생성(Universal Unique IDentifier, 범용 고유 식별자)
 		UUID uuid = UUID.randomUUID();
 		// 랜덤생성+파일이름 저장
@@ -418,4 +565,3 @@ public class AdminController {
 		return savedName;
 	}
 }
-	

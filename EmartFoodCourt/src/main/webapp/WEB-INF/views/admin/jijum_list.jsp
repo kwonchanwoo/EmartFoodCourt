@@ -7,14 +7,6 @@
 
 <jsp:include page="../checkfolder/admin_check.jsp" />
 
-<c:if test="${pageInfo ne null }">
-	<!-- request.setAttribute() // 굳이 안해도 바로 받아올 수 있음-->
-	<c:set var="listCount" value="${pageInfo.listCount }" />
-	<c:set var="nowPage" value="${pageInfo.page }" />
-	<c:set var="maxPage" value="${pageInfo.maxPage }" />
-	<c:set var="startPage" value="${pageInfo.startPage }" />
-	<c:set var="endPage" value="${pageInfo.endPage }" />
-</c:if>
 
 <html>
 <head>
@@ -84,12 +76,13 @@ table {
 		<c:choose>
 			<c:when test="${jijumList ne null }">
 				<c:forEach var="list" items="${jijumList}">
+				
 					<tr>
 						<td><a
-							href="/EmartFoodCourt/jijumInfo.ad?jijum_name=${list.jijum_name}&page=${pageInfo.page}&choice=${param.choice}&search=${param.search}">${list.jijum_name}</a>
+							href="/EmartFoodCourt/jijumInfo.ad?jijum_name=${list.jijum_name}&page=${page}&choice=${param.choice}&search=${param.search}">${list.jijum_name}</a>
 						</td>
 						<td><a
-							href="/EmartFoodCourt/jijumModForm.ad?jijum_name=${list.jijum_name}&page=${pageInfo.page}">수정</a>
+							href="/EmartFoodCourt/jijumModForm.ad?jijum_name=${list.jijum_name}&page=${page}">수정</a>
 						</td>
 						<td><input type="button"
 							onclick="chkForm('${list.jijum_name}')" value="삭제"></td>

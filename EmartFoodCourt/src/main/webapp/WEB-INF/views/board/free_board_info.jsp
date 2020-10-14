@@ -167,15 +167,8 @@
 										<a href="javascript:reply_write_create(${count},1,'${list.reply_content}');">답글쓰기</a>&nbsp;
 
 										<c:if test="${list.id==sessionScope.id || id_grade==2}">
-											<a href="javascript:reply_write_create(${count},2,'${list.reply_content}');">수정</a>&nbsp;
-													
-												
-													<a
-														href="javascript:reply_delete('${list.id}',${list.reply_num},${list.board_num},${list.reply_re_ref},${list.reply_re_seq});">삭제</a>
-												
-
-											
-
+											<a href="javascript:reply_write_create(${count},2,'${list.reply_content}');">수정</a>&nbsp;		
+											<a href="javascript:reply_delete('${list.id}',${list.reply_num},${list.board_num},${list.reply_re_ref},${list.reply_re_seq});">삭제</a>
 										</c:if>
 
 

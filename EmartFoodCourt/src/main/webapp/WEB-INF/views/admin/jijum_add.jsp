@@ -48,29 +48,29 @@ table {
 	<!-- 게시판 등록 -->
 	<jsp:include page="../admin/admin.jsp" /><br>
 	<section id="writeForm">
-		<h2>지점 수정 페이지</h2>
+		<h2>지점 등록 페이지</h2>
 		<form action="/EmartFoodCourt/jijumAddPro.ad" method="post"
 			name="boardform">
 			<table>
 				<tr>
 					<td class="td_right"><input type="hidden" name="oldjijum_name"
-						id="oldjijum_name" value="${total.jijum_name}" readonly /></td>
+						id="oldjijum_name"/></td>
 				</tr>
 				<tr>
 					<td class="td_left"><label for="jijum_name">지점이름 </label></td>
 					<td class="td_right"><input type="text" name="jijum_name"
-						id="jijum_name" value="${total.jijum_name}" required="required" /></td>
+						id="jijum_name" required="required" /></td>
 				</tr>
 				<tr>
 					<td class="td_left"><label for="jijum_content">지점 주소</label></td>
 					<td class="td_right"><input type="text" name="jijum_content"
-						id="jijum_content" value="${total.jijum_content}"
+						id="jijum_content" 
 						required="required" /></td>
 				</tr>
 				<tr>
 					<td class="td_left"><label for="jijum_intro">지점 소개</label></td>
 					<td><textarea id="jijum_intro" name="jijum_intro" cols="45"
-							rows="15" required="required">${total.jijum_intro}</textarea></td>
+							rows="15">${total.jijum_intro}</textarea></td>
 				</tr>
 			</table>
 			<section id="commandCell">

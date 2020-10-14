@@ -27,6 +27,14 @@ public interface AdminService {
 
 	int food_mod_pro(HashMap<String, Object> value);
 
+	int food_delete(HashMap<String,Object> value);
+
+	int jijum_count(HashMap<String, Object> value);
+
+	List<HashMap> jijum_list(HashMap<String, Object> value);
+
+	List<HashMap> jijum_info(HashMap<String, Object> value);
+
 
 
 	

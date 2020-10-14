@@ -107,5 +107,37 @@ public class AdminDaoImpl implements AdminDao {
 		}
 		return val;
 	}
+	@Override
+	public int food_delete(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		return sqlsession.delete(namespace+".food_delete",value);
+	}
+	@Override
+	public int jijum_count(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		Integer val = sqlsession.selectOne(namespace+".jijum_count",value);
+		if(val==null) {
+			val=0;
+		}
+		return val;
+	}
+	@Override
+	public List<HashMap> jijum_list(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		List<HashMap> val = sqlsession.selectList(namespace+".jijum_list",value);
+		if(val.isEmpty()) {
+			val = null;
+		}
+		return val;
+	}
+	@Override
+	public List<HashMap> jijum_info(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		List<HashMap> val = sqlsession.selectList(namespace+".jijum_info",value);
+		if(val.isEmpty()) {
+			val = null;
+		}
+		return val;
+	}
 
 }
