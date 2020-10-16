@@ -132,8 +132,6 @@
 		update free_board set board_subject=#{board_subject},board_content=#{board_content},board_category=#{board_category} where board_num=#{board_num}
 	</update>
 	<delete id="board_delete">
-		delete from free_board_vote where board_num=#{board_num};
-		delete from free_board_reply where board_num=#{board_num};
 		delete from free_board where board_num=#{board_num};
 	</delete>
 	<select id="board_vote_select" resultType="hashmap">

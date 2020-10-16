@@ -169,7 +169,7 @@
 												${list.year }년전
 											</c:when>
 											<c:when test="${list.month!=0}">
-												${list.year }달전
+												${list.month }달전
 											</c:when>
 											<c:when test="${list.day!=0}">
 												${list.day }일전
@@ -224,7 +224,7 @@
 												${list.year }년전
 											</c:when>
 											<c:when test="${list.month!=0}">
-												${list.year }달전
+												${list.month }달전
 											</c:when>
 											<c:when test="${list.day!=0}">
 												${list.day }일전

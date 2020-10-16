@@ -64,14 +64,6 @@ select m.id as id,m.name as name,m.gender as gender,m.age as age,m.phone as phon
 
 	</select>
 	<delete id="member_delete">
-		delete from free_board_reply where id=#{id};
-		delete from free_board_vote where id=#{id};
-		delete from free_board where id=#{id};
-		delete from rev_board where id=#{id};
-		delete from grade where id=#{id};
-		delete from recom where id=#{id};
-		delete from event where id=#{id};
-		delete from user where id=#{id};
 		delete from member where id=#{id};	
 	</delete>
 <select id="selectMember" resultType="hashmap">
