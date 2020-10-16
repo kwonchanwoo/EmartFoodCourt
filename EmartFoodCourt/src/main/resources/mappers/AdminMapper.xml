@@ -110,4 +110,45 @@
 	<select id="jijum_info" resultType="hashmap">
 		select j.jijum_name as jijum_name,j.jijum_content as jijum_content,j.jijum_intro as jijum_intro,j.kr as count_kr,j.ch as count_ch,j.jp as count_jp,j.en as count_en,j.tt as count_total from jijum_list j  where j.jijum_name=#{jijum_name}
 	</select>
+	<select id="jijum_insert" resultType="integer">
+		call jijum_add(#{jijum_name},#{jijum_content},#{jijum_intro},@result);
+		SELECT @result;
+	</select>
+	<select id="jijum_modify" resultType="integer">
+		call jijum_mod(#{oldjijum_name},#{jijum_name},#{jijum_content},#{jijum_intro},@result);
+		SELECT @result;
+	</select>
+	<delete id="jijum_delete">
+		delete from jijum where jijum_name = #{jijum_name}
+	</delete>
+	<select id="Recom_status" resultType="hashmap">
+		select r.rec_num,r.id,r.food_name,r.jijum_name,r.rec_date,r.connect_num from recom_detail r where r.id=#{id};
+	</select>
+	<select id="recom_count" resultType="integer">
+		<choose>
+			<when test="choice==null">
+				select count(id) from total_recom_status t
+			</when>
+			<otherwise>
+				select count(id) from total_recom_status t where t.id like CONCAT('%',#{search},'%')
+			</otherwise>
+		</choose>
+	</select>
+	<select id="Recom_status_list" resultType="hashmap">
+		<bind name="startrow" value="(page - 1) * limit" />
+		<choose>
+			<when test="choice==null">
+				select t.id,t.name,t.gender,t.age,t.phone,t.email,t.grade,t.crec_num,t.cgrade_num,t.crev_num,t.tt from total_recom_status t order by  t.tt desc limit #{startrow},#{limit}
+			</when>
+			<otherwise>
+				select t.id,t.name,t.gender,t.age,t.phone,t.email,t.grade,t.crec_num,t.cgrade_num,t.crev_num,t.tt from total_recom_status t where t.id like CONCAT('%',#{search},'%') order by  t.tt desc limit #{startrow},#{limit}
+			</otherwise>
+		</choose>
+	</select>
+	<select id="status_grade" resultType="hashmap">
+		select g.grade_num,g.id,g.grade_grade,g.food_name,g.jijum_name,g.grade_date,g.connect_num  from grade_detail g where id=#{id}
+	</select>
+	<select id="status_rev" resultType="hashmap">
+		select r.id,r.rev_num,r.connect_num,r.rev_subject,r.rev_content,(select jijum_name from connect c where c.connect_num = r.connect_num ) as jijum_name,(select food_name from connect c where c.connect_num = r.connect_num ) as food_name,r.rev_satisfaction,r.rev_readcount,r.rev_date from rev_board r where r.id=#{id}
+	</select>
 </mapper>

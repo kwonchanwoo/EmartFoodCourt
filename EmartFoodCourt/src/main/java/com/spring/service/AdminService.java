@@ -35,6 +35,22 @@ public interface AdminService {
 
 	List<HashMap> jijum_info(HashMap<String, Object> value);
 
+	int jijum_insert(HashMap<String, Object> value);
+
+	int jijum_modify(HashMap<String, Object> value);
+
+	int jijum_delete(HashMap<String, Object> value);
+
+	List<HashMap> Recom_status(HashMap<String, Object> value);
+
+	int recom_count(HashMap<String, Object> value);
+
+	List<HashMap> Recom_status_list(HashMap<String, Object> value);
+
+	List<HashMap> status_grade(HashMap<String, Object> value);
+
+	List<HashMap> status_rev(HashMap<String, Object> value);
+
 
 
 	

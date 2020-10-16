@@ -52,7 +52,6 @@ table {
 		var retVal = confirm("정말 삭제하시겟습니까?");
 
 		if (retVal == true) {
-			alert("삭제되었습니다.")
 			location.href = "/EmartFoodCourt/memberDelete.ad?id=" + id
 					+ "&grade=" + id_grade;
 		} else {

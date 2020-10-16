@@ -162,8 +162,8 @@ background-color:#2E2E2E;
 												class="drop-text">지점관리</a></li>
 											<li><a href="/EmartFoodCourt/recomstatusList.ad"
 												class="drop-text">음식추천현황</a></li>
-											<li><a href="/EmartFoodCourt/eventList.ev"
-												class="drop-text">이벤트 관리</a></li>
+											<!-- <li><a href="/EmartFoodCourt/eventList.ev"
+												class="drop-text">이벤트 관리</a></li> -->
 										</ul>
 									</c:if> <!-- First Tier Drop Down --> <!-- 
 									<label for="drop-2" class="toggle toogle-2 nav-style">관리자메뉴 

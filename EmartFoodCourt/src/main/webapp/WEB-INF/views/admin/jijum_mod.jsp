@@ -49,30 +49,32 @@ table {
 	<jsp:include page="../admin/admin.jsp" /><br>
 	<section id="writeForm">
 		<h2>지점 수정 페이지</h2>
-		<form action="/EmartFoodCourt/jijumModPro.ad" method="post"
-			name="boardform">
-			<table>
-				<tr>
-					<td class="td_right"><input type="hidden" name="oldjijum_name"
-						id="oldjijum_name" value="${total.jijum_name}" readonly /></td>
-				</tr>
-				<tr>
-					<td class="td_left"><label for="jijum_name">지점이름 </label></td>
-					<td class="td_right"><input type="text" name="jijum_name"
-						id="jijum_name" value="${total.jijum_name}" required="required" /></td>
-				</tr>
-				<tr>
-					<td class="td_left"><label for="jijum_content">지점 주소</label></td>
-					<td class="td_right"><input type="text" name="jijum_content"
-						id="jijum_content" value="${total.jijum_content}"
-						required="required" /></td>
-				</tr>
-				<tr>
-					<td class="td_left"><label for="jijum_intro">지점 소개</label></td>
-					<td><textarea id="jijum_intro" name="jijum_intro" cols="45"
-							rows="15" required="required">${total.jijum_intro}</textarea></td>
-				</tr>
-			</table>
+		<form action="/EmartFoodCourt/jijumModPro.ad" method="post" name="boardform">
+			<c:forEach var="total" items="${total}">
+				<table>
+					<tr>
+						<td class="td_right"><input type="hidden" name="oldjijum_name"
+							id="oldjijum_name" value="${total.jijum_name}" readonly /></td>
+					</tr>
+					<tr>
+						<td class="td_left"><label for="jijum_name">지점이름 </label></td>
+						<td class="td_right">
+							<input type="text" name="jijum_name" id="jijum_name" value="${total.jijum_name}" required="required" />	
+						</td>
+					</tr>
+					<tr>
+						<td class="td_left"><label for="jijum_content">지점 주소</label></td>
+						<td class="td_right"><input type="text" name="jijum_content"
+							id="jijum_content" value="${total.jijum_content}"
+							required="required" /></td>
+					</tr>
+					<tr>
+						<td class="td_left"><label for="jijum_intro">지점 소개</label></td>
+						<td><textarea id="jijum_intro" name="jijum_intro" cols="45"
+								rows="15" required="required">${total.jijum_intro}</textarea></td>
+					</tr>
+				</table>
+			</c:forEach>
 			<section id="commandCell">
 				<input type="submit" value="등록">&nbsp;&nbsp; <input
 					type="reset" value="다시쓰기" /> <a href="javascript:history.back()">이전목록으로</a>

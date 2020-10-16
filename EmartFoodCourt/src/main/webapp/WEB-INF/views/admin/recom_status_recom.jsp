@@ -24,7 +24,7 @@
 	text-align: center;
 }
 #btn:hover {
-	content: url('/EmartFoodCourt/images/backbutton_after.jpg');
+	content: url('/EmartFoodCourt/resources/images/backbutton_after.jpg');
 }
 
 table {
@@ -96,7 +96,7 @@ table {
 			</table>
 			<br>
 			<a href="javascript:history.back();"><img
-				src="/EmartFoodCourt/images/backbutton_before.jpg" width="50px"
+				src="/EmartFoodCourt/resources/images/backbutton_before.jpg" width="50px"
 				height="50px" id="btn"></a>
 			<br>
 

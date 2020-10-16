@@ -34,15 +34,12 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter impleme
 		HttpSession session = request.getSession();
 		boolean dupl_result = false;
 		if (session.getAttribute("id") != null) {
-			System.out.println("id : " + session.getAttribute("id"));
-			System.out.println("user_num : " + session.getAttribute("user_num"));
 			HashMap<String, Object> member = new HashMap<>();
 			member.put("user_num", session.getAttribute("user_num"));
 			member.put("id", session.getAttribute("id"));
 
 			int dupl_cnt = utilService.dupl_cnt(member);
-
-			System.out.println("dupl_cnt : " + dupl_cnt);
+			System.out.println("dupl_cnt : " +dupl_cnt);
 			if (dupl_cnt != 1) {	
 				session.invalidate();
 				PrintWriter out = response.getWriter();
@@ -54,7 +51,6 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter impleme
 				dupl_result = true;
 
 			} else if (dupl_cnt == 0) {
-
 				dupl_result = true;
 			}
 		} else {

@@ -31,7 +31,6 @@ return result;
 		var retVal = confirm("정말 회원 탈퇴 하시겟습니까?");
 
 		if (retVal == true) {
-			alert("회원 탈퇴되었습니다.")
 			location.href = "/EmartFoodCourt/memberDelete.ad?id=" + id
 					+ "&grade=" + id_grade;
 		} else {

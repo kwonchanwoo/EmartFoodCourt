@@ -46,28 +46,9 @@
 		<beans:bean class="org.springframework.mobile.device.DeviceResolverHandlerInterceptor" />
 		<interceptor>
 			 <mapping path="/**/*"/> 
-
-			 <!-- mapping path="/recom.fc" />
-			<mapping path="/menuView.fc"/>
-			<mapping path="/menuView_detail.fc"/>
-			<mapping path="/Rev_Board_detail.fc"/>
-			<mapping path="/avg_grade.fc"/>
-			<mapping path="/count_rec.fc"/>
-			<mapping path="/Rev_Board_writeForm.fc"/>
-			<mapping path="/Rev_Board_writePro.fc"/>
-			<mapping path="/Rev_Board_modifyForm.fc"/>
-			<mapping path="/Rev_Board_modifyPro.fc"/>
-			<mapping path="/Rev_Board_delete.fc"/>
-			<mapping path="/memberLogin.me"/>
-			<mapping path="/memberMyPage.me"/>
-			<mapping path="/memberDelete.ad"/>
-			 <mapping path="/boardList.bd"/>
-			<mapping path="/boardList_writeForm.bd"/>
-			<mapping path="/boardList_writePro.bd"/>
-			<mapping path="/boardList_detail.bd"/>
-			<mapping path="/boardList_modForm.bd"/>
-			<mapping path="/boardList_modPro.bd"/>
-			<mapping path="/boardList_delete.bd"/>   -->
+			<exclude-mapping path="/memberDelete.ad"/>
+			<exclude-mapping path="/"/>
+			<exclude-mapping path="/memberLogout.me"/>
 			<beans:ref bean="authenticationInterceptor" />
 		</interceptor>
 	</interceptors>

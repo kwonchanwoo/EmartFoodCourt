@@ -417,7 +417,7 @@ public class MemberController {
 					
 						out.println("<script>");
 						out.println("alert('회원삭제가 완료되었습니다.');");
-						out.println("location.href='memberList.ad'");
+						out.println("location.href='memberList.ad';");
 						out.println("</script>");
 					/*
 					 * } else { out.println("<script>");

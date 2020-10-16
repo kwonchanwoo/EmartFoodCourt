@@ -139,5 +139,45 @@ public class AdminDaoImpl implements AdminDao {
 		}
 		return val;
 	}
+	@Override
+	public int jijum_insert(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		return sqlsession.selectOne(namespace+".jijum_insert",value);
+	}
+	@Override
+	public int jijum_modify(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		return sqlsession.selectOne(namespace+".jijum_modify",value);
+	}
+	@Override
+	public int jijum_delete(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		return sqlsession.delete(namespace+".jijum_delete",value);
+	}
+	@Override
+	public List<HashMap> Recom_status(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		return sqlsession.selectList(namespace+".Recom_status",value);
+	}
+	@Override
+	public int recom_count(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		return sqlsession.selectOne(namespace+".recom_count",value);
+	}
+	@Override
+	public List<HashMap> Recom_status_list(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		return sqlsession.selectList(namespace+".Recom_status_list",value);
+	}
+	@Override
+	public List<HashMap> status_grade(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		return sqlsession.selectList(namespace+".status_grade",value);
+	}
+	@Override
+	public List<HashMap> status_rev(HashMap<String, Object> value) {
+		// TODO Auto-generated method stub
+		return sqlsession.selectList(namespace+".status_rev",value);
+	}
 
 }

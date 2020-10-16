@@ -52,7 +52,6 @@ table {
 		var retVal = confirm("정말 삭제하시겟습니까?");
 
 		if (retVal == true) {
-			alert("삭제되었습니다.")
 			location.href = "/EmartFoodCourt/jijumDelete.ad?jijum_name="
 					+ jijum_name;
 		} else {
@@ -79,10 +78,10 @@ table {
 				
 					<tr>
 						<td><a
-							href="/EmartFoodCourt/jijumInfo.ad?jijum_name=${list.jijum_name}&page=${page}&choice=${param.choice}&search=${param.search}">${list.jijum_name}</a>
+							href="/EmartFoodCourt/jijumInfo.ad?jijum_name=${list.jijum_name}&page=${nowPage}&choice=${param.choice}&search=${param.search}">${list.jijum_name}</a>
 						</td>
 						<td><a
-							href="/EmartFoodCourt/jijumModForm.ad?jijum_name=${list.jijum_name}&page=${page}">수정</a>
+							href="/EmartFoodCourt/jijumModForm.ad?jijum_name=${list.jijum_name}&page=${nowPage}">수정</a>
 						</td>
 						<td><input type="button"
 							onclick="chkForm('${list.jijum_name}')" value="삭제"></td>

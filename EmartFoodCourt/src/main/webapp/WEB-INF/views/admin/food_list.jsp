@@ -51,7 +51,6 @@ table {
 		var retVal = confirm("정말 삭제하시겟습니까?");
 
 		if (retVal == true) {
-			alert("삭제되었습니다.")
 			location.href = "/EmartFoodCourt/foodDelete.ad?connect_num="
 					+ connect_num + "&food_name=" + food_name;
 		} else {

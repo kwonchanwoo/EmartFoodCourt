@@ -129,8 +129,8 @@ text-align:center;
 									class="nav-style">지점 관리</a></li>
 								<li><a href="/EmartFoodCourt/recomstatusList.ad"
 									class="drop-text">추천현황</a></li>
-								<li><a href="/EmartFoodCourt/eventList.ev"
-									class="drop-text">이벤트 관리</a></li>
+								<!-- <li><a href="/EmartFoodCourt/eventList.ev"
+									class="drop-text">이벤트 관리</a></li> -->
 
 							</ul>
 						</nav>
