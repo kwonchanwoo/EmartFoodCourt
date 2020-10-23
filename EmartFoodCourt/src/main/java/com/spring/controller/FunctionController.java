@@ -611,14 +611,14 @@ public class FunctionController {
 		String originalFileName = multipartFile.getOriginalFilename(); // 오리지날 파일명
 		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
 		File dir = new File(filePath);
-		if (!dir.isDirectory()) {
-			dir.mkdir();
-		}
+		
+		 if (!dir.isDirectory()) { dir.mkdir(); }
+		 
 
 		try {
 			if (!(originalFileName.trim().equals("")) && multipartFile.getOriginalFilename() != null) {
 				originalFileName = uploadFile(originalFileName, multipartFile.getBytes(),filePath);
-				multipartFile.transferTo(new File(filePath + originalFileName));
+				/* multipartFile.transferTo(new File(filePath + originalFileName)); */
 				jsonObject.put("url", "resources\\images\\" + originalFileName);
 				jsonObject.put("responseCode", "success");
 			}
